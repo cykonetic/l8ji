@@ -1,8 +1,10 @@
 <?php
 
+use App\Http\Controllers\ExerciseController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use Laravel\Jetstream\Rules\Role;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,3 +29,8 @@ Route::get('/', function () {
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->name('dashboard');
+
+Route::get('/exercise', [ExerciseController::class, 'index']);
+Route::post('/exercise', [ExerciseController::class, 'store']);
+Route::patch('/exercise/edit/{id}', [ExerciseController::class, 'update']);
+Route::delete('/exercise/delete/{id}', [ExerciseController::class, 'delete']);
