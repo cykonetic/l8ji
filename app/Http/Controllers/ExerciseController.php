@@ -16,7 +16,7 @@ class ExerciseController extends Controller
      */
     public function index(Exercise $exercise)
     {
-        return Exercise::orderBy('name', 'ASC')->get();
+        // return Exercise::orderBy('name', 'ASC')->get();
     }
 
     /**
@@ -37,7 +37,8 @@ class ExerciseController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $newExercise = new Exercise();
+        $newExercise->name = $request->ecercise('name');
     }
 
     /**

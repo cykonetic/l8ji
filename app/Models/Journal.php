@@ -26,7 +26,13 @@ class Journal extends Activity
         });
     }
 
+    public function activity()
+    {
+        return $this->morphOne(Activity::class, 'activity');
+    }
+
     public function detail()
     {
         return $this->hasOne(JournalDetail::class);
-    }}
+    }
+}

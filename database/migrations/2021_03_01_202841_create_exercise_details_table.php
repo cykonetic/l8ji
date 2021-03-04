@@ -16,10 +16,12 @@ class CreateExerciseDetailsTable extends Migration
         Schema::create('exercise_details', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('exercise_id');
-            $table->string('vimeo_link');
+            $table->string('url');
 
             $table->timestamps();
             $table->softDeletes();
+
+            $table->index('exercise_id', 'activity');
         });
     }
 

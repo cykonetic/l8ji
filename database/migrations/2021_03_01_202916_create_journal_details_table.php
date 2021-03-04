@@ -20,6 +20,8 @@ class CreateJournalDetailsTable extends Migration
 
             $table->timestamps();
             $table->softDeletes();
+
+            $table->index('journal_id', 'activity');
         });
     }
 

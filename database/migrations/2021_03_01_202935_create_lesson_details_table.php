@@ -16,10 +16,12 @@ class CreateLessonDetailsTable extends Migration
         Schema::create('lesson_details', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('lesson_id');
-            $table->string('lrs_link');
+            $table->string('url');
 
             $table->timestamps();
             $table->softDeletes();
+
+            $table->index('lesson_id', 'activity');
         });
     }
 

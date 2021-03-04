@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Exception;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
@@ -9,6 +10,8 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 abstract class Activity extends Model
 {
     use HasFactory;
+
+    protected $primaryKey = 'activity_id';
 
     protected $fillable = [
         'name',
@@ -20,9 +23,13 @@ abstract class Activity extends Model
         return $this->belongsToMany(Keyword::class, 'activity_keyword', 'activity_id');
     }
 
+    public function activity()
+    {
+        return $this->morphTo();
+    }
+
     public function detail()
     {
-        $actionClass = $this->type;
-        return $actionClass::find($this->id)->detail();
+        return $this->activity()->detail();
     }
 }

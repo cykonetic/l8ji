@@ -16,10 +16,15 @@ class CreateMeasureDetailsTable extends Migration
         Schema::create('measure_details', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('measure_id');
-            $table->string('conversation_class');
+
+            $table->string('class_name');
             $table->float('min_score');
             $table->float('max_score');
+
             $table->timestamps();
+            $table->softDeletes();
+
+            $table->unique('measure_id');
         });
     }
 
