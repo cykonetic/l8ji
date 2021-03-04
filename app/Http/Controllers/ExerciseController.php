@@ -16,7 +16,7 @@ class ExerciseController extends Controller
      */
     public function index(Exercise $exercise)
     {
-        //
+        return Exercise::orderBy('name', 'ASC')->get();
     }
 
     /**

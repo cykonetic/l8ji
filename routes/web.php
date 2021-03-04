@@ -30,7 +30,9 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->name('dashboard');
 
-Route::get('/exercise', [ExerciseController::class, 'index']);
-Route::post('/exercise', [ExerciseController::class, 'store']);
-Route::patch('/exercise/edit/{id}', [ExerciseController::class, 'update']);
-Route::delete('/exercise/delete/{id}', [ExerciseController::class, 'delete']);
+Route::get('/exercises', [ExerciseController::class, 'index']);
+Route::prefix('/exercise')->group(function () {
+    Route::post('/store', [ExerciseController::class, 'store']);
+    Route::put('/{id}', [ExerciseController::class, 'update']);
+    Route::delete('/{id}', [ExerciseController::class, 'delete']);
+});
