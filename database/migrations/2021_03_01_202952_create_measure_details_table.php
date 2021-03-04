@@ -24,7 +24,7 @@ class CreateMeasureDetailsTable extends Migration
             $table->timestamps();
             $table->softDeletes();
 
-            $table->unique('measure_id');
+            $table->index('measure_id', 'activity');
         });
     }
 
