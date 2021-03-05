@@ -13,12 +13,12 @@ class Measure extends Activity
         parent::boot();
 
         static::addGlobalScope(function (Builder $builder) {
-            $builder->where('type', self::class);
+            $builder->where('activity_type', self::class);
         });
 
         static::creating(function (Measure $measure) {
             $measure->forceFill([
-                'type' => self::class,
+                'activity_type' => self::class,
             ]);
         });
     }

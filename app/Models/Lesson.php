@@ -13,12 +13,12 @@ class Lesson extends Activity
         parent::boot();
 
         static::addGlobalScope(function (Builder $builder) {
-            $builder->where('type', self::class);
+            $builder->where('activity_type', static::class);
         });
 
         static::creating(function (Lesson $lesson) {
             $lesson->forceFill([
-                'type' => self::class,
+                'activity_type' => self::class,
             ]);
         });
     }

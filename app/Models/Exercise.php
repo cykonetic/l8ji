@@ -13,12 +13,12 @@ class Exercise extends Activity
         parent::boot();
 
         static::addGlobalScope(function (Builder $builder) {
-            $builder->where('type', static::class);
+            $builder->where('activity_type', static::class);
         });
 
         static::creating(function (Exercise $exercise) {
             $exercise->forceFill([
-                'type' => self::class,
+                'activity_type' => self::class,
             ]);
         });
     }

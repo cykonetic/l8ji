@@ -18,7 +18,7 @@ class CreateActivitiesTable extends Migration
             $table->string('activity_type');
 
             $table->string('name');
-            $table->string('descritption');
+            $table->string('description');
 
             $table->timestamps();
             $table->softDeletes();
