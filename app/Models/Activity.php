@@ -2,10 +2,8 @@
 
 namespace App\Models;
 
-use Exception;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 abstract class Activity extends Model
 {
@@ -15,7 +13,7 @@ abstract class Activity extends Model
 
     protected $fillable = [
         'name',
-        'description'
+        'description',
     ];
 
     public function keywords()

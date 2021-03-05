@@ -75,13 +75,17 @@ return [
 
         'redis' => [
             'driver' => 'redis',
-            'connection' => 'cache',
+            'connection' => 'default',
             'lock_connection' => 'default',
         ],
-
-        'rsession' => [
+        'session' => [
             'driver' => 'redis',
             'connection' => 'session',
+            'lock_connection' => 'default',
+        ],
+        'queue' => [
+            'driver' => 'redis',
+            'connection' => 'queue',
             'lock_connection' => 'default',
         ],
 

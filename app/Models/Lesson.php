@@ -3,8 +3,6 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Lesson extends Activity
 {
@@ -20,7 +18,7 @@ class Lesson extends Activity
 
         static::creating(function (Lesson $lesson) {
             $lesson->forceFill([
-                'type' => self::class
+                'type' => self::class,
             ]);
         });
     }

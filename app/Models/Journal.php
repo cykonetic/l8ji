@@ -3,8 +3,6 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Journal extends Activity
 {
@@ -18,10 +16,9 @@ class Journal extends Activity
             $builder->where('type', self::class);
         });
 
-
         static::creating(function (Journal $journal) {
             $journal->forceFill([
-                'type' => self::class
+                'type' => self::class,
             ]);
         });
     }
