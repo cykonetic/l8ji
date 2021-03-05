@@ -30,4 +30,10 @@ abstract class Activity extends Model
     {
         return $this->activity()->detail();
     }
+
+    public function programs()
+    {
+        return $this->belongsToMany(Program::class)
+            ->using(ProgramActivity::class);
+    }
 }
