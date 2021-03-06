@@ -14,14 +14,13 @@ class CreateLessonDetailsTable extends Migration
     public function up()
     {
         Schema::create('lesson_details', function (Blueprint $table) {
-            $table->id();
             $table->unsignedBigInteger('lesson_id');
             $table->string('url');
 
             $table->timestamps();
             $table->softDeletes();
 
-            $table->index('lesson_id', 'activity');
+            $table->primary('lesson_id');
         });
     }
 

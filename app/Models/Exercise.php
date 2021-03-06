@@ -30,6 +30,6 @@ class Exercise extends Activity
 
     public function detail()
     {
-        return $this->hasOne(ExerciseDetail::class);
+        return $this->hasOne(ExerciseDetail::class, 'exercise_id');
     }
 }

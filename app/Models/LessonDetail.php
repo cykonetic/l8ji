@@ -9,8 +9,10 @@ class LessonDetail extends Model
 {
     use HasFactory;
 
+    protected $primaryKey = 'lesson_id';
+
     public function lesson()
     {
-        return $this->belongsTo(Lesson::class);
+        return $this->belongsTo(Lesson::class, $this->primaryKey, 'activity_id', 'activity');
     }
 }

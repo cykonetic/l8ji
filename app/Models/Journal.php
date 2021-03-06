@@ -30,6 +30,6 @@ class Journal extends Activity
 
     public function detail()
     {
-        return $this->hasOne(JournalDetail::class);
+        return $this->hasOne(JournalDetail::class, 'journal_id');
     }
 }

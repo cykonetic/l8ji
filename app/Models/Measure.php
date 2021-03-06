@@ -30,6 +30,6 @@ class Measure extends Activity
 
     public function detail()
     {
-        return $this->hasOne(MeasureeDetail::class);
+        return $this->hasOne(MeasureeDetail::class, 'message_id');
     }
 }

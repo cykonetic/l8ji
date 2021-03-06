@@ -14,14 +14,13 @@ class CreateJournalDetailsTable extends Migration
     public function up()
     {
         Schema::create('journal_details', function (Blueprint $table) {
-            $table->id();
             $table->unsignedBigInteger('journal_id');
             $table->string('url');
 
             $table->timestamps();
             $table->softDeletes();
 
-            $table->index('journal_id', 'activity');
+            $table->primary('journal_id');
         });
     }
 

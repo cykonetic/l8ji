@@ -14,7 +14,6 @@ class CreateMeasureDetailsTable extends Migration
     public function up()
     {
         Schema::create('measure_details', function (Blueprint $table) {
-            $table->id();
             $table->unsignedBigInteger('measure_id');
 
             $table->string('class_name');
@@ -24,7 +23,7 @@ class CreateMeasureDetailsTable extends Migration
             $table->timestamps();
             $table->softDeletes();
 
-            $table->index('measure_id', 'activity');
+            $table->primary('measure_id');
         });
     }
 

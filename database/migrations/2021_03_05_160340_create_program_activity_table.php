@@ -20,6 +20,7 @@ class CreateProgramActivityTable extends Migration
 
             $table->timestamps();
             $table->softDeletes();
+
             $table->primary(['program_id', 'activity_id']);
         });
     }

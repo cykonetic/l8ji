@@ -30,6 +30,6 @@ class Lesson extends Activity
 
     public function detail()
     {
-        return $this->hasOne(LessomDetail::class);
+        return $this->hasOne(LessomDetail::class, 'lesson_id');
     }
 }

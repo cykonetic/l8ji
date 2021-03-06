@@ -14,14 +14,13 @@ class CreateExerciseDetailsTable extends Migration
     public function up()
     {
         Schema::create('exercise_details', function (Blueprint $table) {
-            $table->id();
             $table->unsignedBigInteger('exercise_id');
             $table->string('url');
 
             $table->timestamps();
             $table->softDeletes();
 
-            $table->index('exercise_id', 'activity');
+            $table->primary('exercise_id');
         });
     }
 

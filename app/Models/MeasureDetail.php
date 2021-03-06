@@ -9,8 +9,10 @@ class MeasureDetail extends Model
 {
     use HasFactory;
 
+    protected $primaryKey = 'measure_id';
+
     public function measure()
     {
-        return $this->belongsTo(Measure::class);
+        return $this->belongsTo(Measure::class, $this->primaryKey, 'activity_id', 'activity');
     }
 }

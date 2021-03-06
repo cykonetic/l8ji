@@ -9,8 +9,10 @@ class ExerciseDetail extends Model
 {
     use HasFactory;
 
+    protected $primaryKey = 'exercise_id';
+
     public function exercise()
     {
-        return $this->belongsTo(Exercise::class);
+        return $this->belongsTo(Exercise::class, $this->primaryKey, 'activity_id', 'activity');
     }
 }
