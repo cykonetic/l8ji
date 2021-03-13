@@ -1,10 +1,8 @@
 <?php
 
-use App\Http\Controllers\ExerciseController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
-use Laravel\Jetstream\Rules\Role;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,10 +17,10 @@ use Laravel\Jetstream\Rules\Role;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
+        'canLogin'       => Route::has('login'),
+        'canRegister'    => Route::has('register'),
         'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
+        'phpVersion'     => PHP_VERSION,
     ]);
 });
 
@@ -30,9 +28,9 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->name('dashboard');
 
-Route::get('/exercises', [ExerciseController::class, 'index']);
+Route::get('/exercisess', [ExercisesController::class, 'index']);
 Route::prefix('/exercise')->group(function () {
-    Route::post('/store', [ExerciseController::class, 'store']);
-    Route::put('/{id}', [ExerciseController::class, 'update']);
-    Route::delete('/{id}', [ExerciseController::class, 'delete']);
+    Route::post('/store', [ExercisesController::class, 'store']);
+    Route::put('/{id}', [ExercisesController::class, 'update']);
+    Route::delete('/{id}', [ExercisesController::class, 'delete']);
 });

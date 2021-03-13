@@ -14,16 +14,12 @@ class CreateActivitiesTable extends Migration
     public function up()
     {
         Schema::create('activities', function (Blueprint $table) {
-            $table->id('activity_id');
-            $table->string('activity_type');
+            $table->id();
 
-            $table->string('name');
-            $table->string('description');
+            $table->unsignedBigInteger('doable_id');
+            $table->string('doable_type');
 
-            $table->timestamps();
-            $table->softDeletes();
-
-            $table->index(['activity_type', 'activity_id'], 'activity');
+            $table->unique(['doable_id', 'doable_type', ], 'doable');
         });
     }
 

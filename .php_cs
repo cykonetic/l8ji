@@ -1,29 +1,17 @@
 <?php
 
-$excluded_folders = [
-    'bootstrap',
-    'docker',
-    'node_modules',
-    'storage',
-    'vendor',
-];
+require __DIR__ . '/vendor/autoload.php';
+
+$config = new PhpCsFixer\Config();
 
 $finder = PhpCsFixer\Finder::create()
-    ->exclude($excluded_folders)
-    ->notName('AcceptanceTester.php')
-    ->notName('FunctionalTester.php')
-    ->notName('UnitTester.php')
-    ->in(__DIR__);
+    ->in(__DIR__)
+    ->exclude('tests');
 
-return PhpCsFixer\Config::create()
-    ->setRules([
-        '@Symfony'                          => true,
-        'binary_operator_spaces'            => ['align_double_arrow' => true],
-        'array_syntax'                      => ['syntax' => 'short'],
-        'linebreak_after_opening_tag'       => true,
-        'not_operator_with_successor_space' => true,
-        'ordered_imports'                   => true,
-        'phpdoc_order'                      => true,
-    ])
+$rules = require __DIR__ . '/.php_cs.rules.php';
+
+return $config
+    ->setRules($rules)
     ->setFinder($finder)
-;
+    ->setRiskyAllowed(true)
+    ->setCacheFile(__DIR__ . '/.php_cs.cache');

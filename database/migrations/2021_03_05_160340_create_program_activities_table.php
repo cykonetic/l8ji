@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateExerciseDetailsTable extends Migration
+class CreateProgramActivtiesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,18 @@ class CreateExerciseDetailsTable extends Migration
      */
     public function up()
     {
-        Schema::create('exercise_details', function (Blueprint $table) {
-            $table->unsignedBigInteger('exercise_id');
-            $table->string('url');
+        Schema::create('program_sequences', function (Blueprint $table) {
+            $table->id();
+
+            $table->unsignedBigInteger('program_id');
+            $table->unsignedBigInteger('activity_id');
 
             $table->timestamps();
+            // we can create the field but the model doesn't support it
             $table->softDeletes();
 
-            $table->primary('exercise_id');
+            $table->index(['program_id', 'activity_id']);
+
         });
     }
 
@@ -31,6 +35,6 @@ class CreateExerciseDetailsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('exercise_details');
+        Schema::dropIfExists('program_activity');
     }
 }

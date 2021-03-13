@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AlterLessonDetailsAddDuration extends Migration
+class CreateProgramsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,11 @@ class AlterLessonDetailsAddDuration extends Migration
      */
     public function up()
     {
-        Schema::table('lesson_details', function (Blueprint $table) {
-            $table->time('duration')->after('url');
+        Schema::create('programs', function (Blueprint $table) {
+            $table->id();
+            $$table->string('name');
+            $table->string('description');
+            $table->timestamps();
         });
     }
 
@@ -25,8 +28,6 @@ class AlterLessonDetailsAddDuration extends Migration
      */
     public function down()
     {
-        Schema::table('lesson_details', function (Blueprint $table) {
-            $table->removeColumn('duration');
-        });
+        Schema::dropIfExists('programs');
     }
 }

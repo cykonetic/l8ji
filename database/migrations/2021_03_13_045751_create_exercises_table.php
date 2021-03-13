@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateProgramActivityTable extends Migration
+class CreateExercisesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,14 @@ class CreateProgramActivityTable extends Migration
      */
     public function up()
     {
-        Schema::create('program_activity', function (Blueprint $table) {
-            $table->unsignedBigInteger('program_id');
-            $table->unsignedBigInteger('activity_id');
-            $table->unsignedInteger('sequence');
-
+        Schema::create('exercises', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->string('description');
+            $table->string('url');
+            $table->time('duration');
             $table->timestamps();
             $table->softDeletes();
-
-            $table->primary(['program_id', 'activity_id']);
         });
     }
 
@@ -32,6 +31,6 @@ class CreateProgramActivityTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('program_activity');
+        Schema::dropIfExists('exercises');
     }
 }

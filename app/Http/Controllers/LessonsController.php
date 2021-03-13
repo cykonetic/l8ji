@@ -2,29 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Exercise;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
-use Inertia\Inertia;
 
-class ExerciseController extends Controller
+class LessonsController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Exercise $exercise)
-    {
-        // return Exercise::orderBy('name', 'ASC')->get();
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function index()
     {
         //
     }
@@ -37,8 +24,7 @@ class ExerciseController extends Controller
      */
     public function store(Request $request)
     {
-        $newExercise = new Exercise();
-        $newExercise->name = $request->ecercise('name');
+        //
     }
 
     /**
@@ -48,17 +34,6 @@ class ExerciseController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
     {
         //
     }

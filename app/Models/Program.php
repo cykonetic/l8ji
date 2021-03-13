@@ -3,9 +3,43 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
-class Program extends Activity
+/**
+ * App\Models\Program.
+ *
+ * @property int                                                             $activity_id
+ * @property string                                                          $activity_type
+ * @property string                                                          $name
+ * @property string                                                          $description
+ * @property \Illuminate\Support\Carbon|null                                 $created_at
+ * @property \Illuminate\Support\Carbon|null                                 $updated_at
+ * @property \Illuminate\Support\Carbon|null                                 $deleted_at
+ * @property \Illuminate\Database\Eloquent\Collection|\App\Models\Activity[] $activities
+ * @property int|null                                                        $activities_count
+ * @property \App\Models\Activity|null                                       $activity
+ * @property \Illuminate\Database\Eloquent\Collection|\App\Models\Keyword[]  $keywords
+ * @property int|null                                                        $keywords_count
+ * @property \Illuminate\Database\Eloquent\Collection|Program[]              $programs
+ * @property int|null                                                        $programs_count
+ *
+ * @method static Builder|Program newModelQuery()
+ * @method static Builder|Program newQuery()
+ * @method static Builder|Program query()
+ * @method static Builder|Program whereActivityId($value)
+ * @method static Builder|Program whereActivityType($value)
+ * @method static Builder|Program whereCreatedAt($value)
+ * @method static Builder|Program whereDeletedAt($value)
+ * @method static Builder|Program whereDescription($value)
+ * @method static Builder|Program whereName($value)
+ * @method static Builder|Program whereUpdatedAt($value)
+ * @mixin \Eloquent
+ */
+class Program extends Model
 {
+    use HasFactory;
+
     protected $table = 'activities';
 
     public static function boot()
@@ -16,24 +50,22 @@ class Program extends Activity
             $builder->where('activity_type', self::class);
         });
 
-        static::creating(function (Measure $measure) {
-            $measure->forceFill([
+        static::creating(function (Program $program) {
+            $program->forceFill([
                 'activity_type' => self::class,
             ]);
         });
     }
 
-    public function activities()
+    public function sequences()
     {
-        return $this->belongsToMany(Activity::class)
-            ->using(ProgramActivity::class)
-            ->withPivot([
-                'sequence',
-            ]);
+        $this->hasMany(Sequence::class)
+            ->as('sequence')
+            ->withPivot('sequence');
     }
 
-    public function activity()
+    public function activities()
     {
-        return $this->morphOne(Activity::class, 'activity');
+        $this->with('sequences.activity.doable');
     }
 }
