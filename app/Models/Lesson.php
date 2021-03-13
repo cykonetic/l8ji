@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Interdaces\CanDoInterface;
+use App\Traits\CanDoTrait;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -35,34 +37,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static Builder|Lesson whereUpdatedAt($value)
  * @mixin \Eloquent
  */
-class Lesson extends Model
+class Lesson extends Model implements CanDoInterface
 {
     use HasFactory;
-
-    protected $table = 'activities';
-
-    public static function boot()
-    {
-        parent::boot();
-
-        static::addGlobalScope(function (Builder $builder) {
-            $builder->where('activity_type', static::class);
-        });
-
-        static::creating(function (Lesson $lesson) {
-            $lesson->forceFill([
-                'activity_type' => self::class,
-            ]);
-        });
-    }
-
-    public function activity()
-    {
-        return $this->morphOne(Activity::class, 'activity');
-    }
-
-    public function detail()
-    {
-        return $this->hasOne(LessonDetail::class, 'lesson_id');
-    }
+    use CanDoTrait;
 }

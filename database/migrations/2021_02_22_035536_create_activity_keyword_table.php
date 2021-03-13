@@ -14,10 +14,10 @@ class CreateActivityKeywordTable extends Migration
     public function up()
     {
         Schema::create('activity_keyword', function (Blueprint $table) {
-            $table->unsignedBigInteger('activity_id')->index();
-            $table->unsignedBigInteger('keyword_id')->index();
+            $table->unsignedBigInteger('activity_id');
+            $table->unsignedBigInteger('keyword_id')->index('keyworded');
 
-            $table->unique(['activity_id', 'keyword_id']);
+            $table->primary(['activity_id', 'keyword_id']);
         });
     }
 

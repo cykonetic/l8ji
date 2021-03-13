@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Interdaces\CanDoInterface;
+use App\Traits\CanDoTrait;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -35,34 +37,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static Builder|Exercise whereUpdatedAt($value)
  * @mixin \Eloquent
  */
-class Exercise extends Model
+class Exercise extends Model implements CanDoInterface
 {
     use HasFactory;
-
-    public static function boot()
-    {
-        parent::boot();
-
-        static::created(function (Exercise $exercise) {
-            new Activity([
-                'doable_type' => self::class,
-                'doable_id' => $exercise->id,
-            ]);
-        });
-    }
-
-    public function activity()
-    {
-        return $this->morphOne(Activity::class, 'doable');
-    }
-
-    public function keywords()
-    {
-        return $this->with('activity.keywords');
-    }
-
-    public function programs()
-    {
-        return $this->with('activity.programs');
-    }
+    use CanDoTrait;
 }

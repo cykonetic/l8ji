@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Interdaces\CanDoInterface;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -36,24 +37,19 @@ use Illuminate\Database\Eloquent\Model;
  * @method static Builder|Program whereUpdatedAt($value)
  * @mixin \Eloquent
  */
-class Program extends Model
+class Program extends Model implements CanDoInterface
 {
     use HasFactory;
-
-    protected $table = 'activities';
 
     public static function boot()
     {
         parent::boot();
 
-        static::addGlobalScope(function (Builder $builder) {
-            $builder->where('activity_type', self::class);
-        });
-
-        static::creating(function (Program $program) {
-            $program->forceFill([
-                'activity_type' => self::class,
-            ]);
+        static::created(function (CanDoInterface $doable) {
+            (new Activity([
+                'doable_type' => self::class,
+                'doable_id' => $doable->id,
+            ]))->save();
         });
     }
 

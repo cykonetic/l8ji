@@ -20,7 +20,7 @@ class CreateJournalsTable extends Migration
             $table->string('url');
 
             $table->timestamps();
-            $table->softDeletes(); $table->timestamps();
+            $table->softDeletes();
         });
     }
 

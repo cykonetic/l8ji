@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Interdaces\CanDoInterface;
+use App\Traits\CanDoTrait;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -35,34 +37,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static Builder|Measure whereUpdatedAt($value)
  * @mixin \Eloquent
  */
-class Measure extends Model
+class Measure extends Model implements CanDoInterface
 {
     use HasFactory;
-
-    protected $table = 'activities';
-
-    public static function boot()
-    {
-        parent::boot();
-
-        static::addGlobalScope(function (Builder $builder) {
-            $builder->where('activity_type', self::class);
-        });
-
-        static::creating(function (Measure $measure) {
-            $measure->forceFill([
-                'activity_type' => self::class,
-            ]);
-        });
-    }
-
-    public function activity()
-    {
-        return $this->morphOne(Activity::class, 'activity');
-    }
-
-    public function detail()
-    {
-        return $this->hasOne(MeasureDetail::class, 'message_id');
-    }
+    use CanDoTrait;
 }
