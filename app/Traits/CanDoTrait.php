@@ -14,10 +14,11 @@ trait CanDoTrait
 
         static::created(function (CanDoInterface $doable) {
             try {
-                Activity::create([
+                $activity = Activity::create([
                     'doable_type' => get_class($doable),
                     'doable_id' => $doable->id,
-                ])->saveQuietly();
+                ]);
+                $activity->saveQuietly();
             } catch(Exception $e) {
 
             }
