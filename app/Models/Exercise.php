@@ -2,43 +2,46 @@
 
 namespace App\Models;
 
-use App\Interdaces\CanDoInterface;
+use App\Interfaces\CanDoInterface;
 use App\Traits\CanDoTrait;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
- * App\Models\Exercise.
+ * App\Models\Exercise
  *
- * @property int                                                            $activity_id
- * @property string                                                         $activity_type
- * @property string                                                         $name
- * @property string                                                         $description
- * @property \Illuminate\Support\Carbon|null                                $created_at
- * @property \Illuminate\Support\Carbon|null                                $updated_at
- * @property \Illuminate\Support\Carbon|null                                $deleted_at
- * @property \App\Models\Activity|null                                      $activity
- * @property \App\Models\ExerciseDetail|null                                $detail
- * @property \Illuminate\Database\Eloquent\Collection|\App\Models\Keyword[] $keywords
- * @property int|null                                                       $keywords_count
- * @property \Illuminate\Database\Eloquent\Collection|\App\Models\Program[] $programs
- * @property int|null                                                       $programs_count
- *
+ * @property int $id
+ * @property string $name
+ * @property string $description
+ * @property string $url
+ * @property string $duration
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read \App\Models\Activity|null $activity
  * @method static Builder|Exercise newModelQuery()
  * @method static Builder|Exercise newQuery()
+ * @method static \Illuminate\Database\Query\Builder|Exercise onlyTrashed()
  * @method static Builder|Exercise query()
- * @method static Builder|Exercise whereActivityId($value)
- * @method static Builder|Exercise whereActivityType($value)
  * @method static Builder|Exercise whereCreatedAt($value)
  * @method static Builder|Exercise whereDeletedAt($value)
  * @method static Builder|Exercise whereDescription($value)
+ * @method static Builder|Exercise whereDuration($value)
+ * @method static Builder|Exercise whereId($value)
  * @method static Builder|Exercise whereName($value)
  * @method static Builder|Exercise whereUpdatedAt($value)
+ * @method static Builder|Exercise whereUrl($value)
+ * @method static \Illuminate\Database\Query\Builder|Exercise withTrashed()
+ * @method static \Illuminate\Database\Query\Builder|Exercise withoutTrashed()
  * @mixin \Eloquent
  */
 class Exercise extends Model implements CanDoInterface
 {
     use HasFactory;
+    use SoftDeletes;
     use CanDoTrait;
+
+    protected $guarded = [];
 }

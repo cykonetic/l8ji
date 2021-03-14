@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Interdaces;
+namespace App\Interfaces;
 
 interface CanDoInterface
 {

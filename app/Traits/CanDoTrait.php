@@ -2,8 +2,9 @@
 
 namespace App\Traits;
 
-use App\Interdaces\CanDoInterface;
+use App\Interfaces\CanDoInterface;
 use App\Models\Activity;
+use Exception;
 
 trait CanDoTrait
 {
@@ -12,10 +13,14 @@ trait CanDoTrait
         parent::boot();
 
         static::created(function (CanDoInterface $doable) {
-            (new Activity([
-                'doable_type' => self::class,
-                'doable_id' => $doable->id,
-            ]))->save();
+            try {
+                Activity::create([
+                    'doable_type' => get_class($doable),
+                    'doable_id' => $doable->id,
+                ])->saveQuietly();
+            } catch(Exception $e) {
+
+            }
         });
     }
 
@@ -23,15 +28,4 @@ trait CanDoTrait
     {
         return $this->morphOne(Activity::class, 'doable');
     }
-
-    public function keywords()
-    {
-        return $this->with('activity.keywords');
-    }
-
-    public function programs()
-    {
-        return $this->with('activity.programs');
-    }
-
 }

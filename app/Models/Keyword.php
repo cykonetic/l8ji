@@ -7,24 +7,23 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
- * App\Models\Keyword.
+ * App\Models\Keyword
  *
- * @property int                                                             $id
- * @property string                                                          $keyword
- * @property \Illuminate\Support\Carbon|null                                 $created_at
- * @property \Illuminate\Support\Carbon|null                                 $updated_at
- * @property \Illuminate\Support\Carbon|null                                 $deleted_at
- * @property \Illuminate\Database\Eloquent\Collection|\App\Models\Activity[] $activities
- * @property int|null                                                        $activities_count
- * @property \Illuminate\Database\Eloquent\Collection|\App\Models\Exercise[] $exercises
- * @property int|null                                                        $exercises_count
- * @property \Illuminate\Database\Eloquent\Collection|\App\Models\Journal[]  $journals
- * @property int|null                                                        $journals_count
- * @property \Illuminate\Database\Eloquent\Collection|\App\Models\Lesson[]   $lessons
- * @property int|null                                                        $lessons_count
- * @property \Illuminate\Database\Eloquent\Collection|\App\Models\Measure[]  $measures
- * @property int|null                                                        $measures_count
- *
+ * @property int $id
+ * @property string $keyword
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Activity[] $activities
+ * @property-read int|null $activities_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Exercise[] $exercises
+ * @property-read int|null $exercises_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Journal[] $journals
+ * @property-read int|null $journals_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Lesson[] $lessons
+ * @property-read int|null $lessons_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Measure[] $measures
+ * @property-read int|null $measures_count
  * @method static \Illuminate\Database\Eloquent\Builder|Keyword newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Keyword newQuery()
  * @method static \Illuminate\Database\Query\Builder|Keyword onlyTrashed()

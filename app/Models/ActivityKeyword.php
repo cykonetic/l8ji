@@ -5,6 +5,20 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
+/**
+ * App\Models\ActivityKeyword
+ *
+ * @property int $activity_id
+ * @property int $keyword_id
+ * @property-read \App\Models\Activity $activity
+ * @property-read \App\Models\Keyword $keyword
+ * @method static \Illuminate\Database\Eloquent\Builder|ActivityKeyword newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|ActivityKeyword newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|ActivityKeyword query()
+ * @method static \Illuminate\Database\Eloquent\Builder|ActivityKeyword whereActivityId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ActivityKeyword whereKeywordId($value)
+ * @mixin \Eloquent
+ */
 class ActivityKeyword extends Pivot
 {
     use HasFactory;

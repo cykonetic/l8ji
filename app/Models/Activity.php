@@ -6,40 +6,25 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphPivot;
 
 /**
- * App\Models\Activity.
+ * App\Models\Activity
  *
- * @property int                                                            $activity_id
- * @property string                                                         $activity_type
- * @property string                                                         $name
- * @property string                                                         $description
- * @property \Illuminate\Support\Carbon|null                                $created_at
- * @property \Illuminate\Support\Carbon|null                                $updated_at
- * @property \Illuminate\Support\Carbon|null                                $deleted_at
- * @property Model|\Eloquent                                                $activity
- * @property \Illuminate\Database\Eloquent\Collection|\App\Models\Keyword[] $keywords
- * @property int|null                                                       $keywords_count
- * @property \Illuminate\Database\Eloquent\Collection|\App\Models\Program[] $programs
- * @property int|null                                                       $programs_count
- *
+ * @property-read Model|\Eloquent $doable
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Keyword[] $keywords
+ * @property-read int|null $keywords_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Program[] $programs
+ * @property-read int|null $programs_count
  * @method static \Illuminate\Database\Eloquent\Builder|Activity newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Activity newQuery()
- * @method static \Illuminate\Database\Query\Builder|Activity onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Activity query()
- * @method static \Illuminate\Database\Eloquent\Builder|Activity whereActivityId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Activity whereActivityType($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Activity whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Activity whereDeletedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Activity whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Activity whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Activity whereUpdatedAt($value)
- * @method static \Illuminate\Database\Query\Builder|Activity withTrashed()
- * @method static \Illuminate\Database\Query\Builder|Activity withoutTrashed()
  * @mixin \Eloquent
  */
 class Activity extends MorphPivot
 {
     protected $guarded = [];
-    protected $incrementing = true;
+    protected $table = 'activities';
+
+    public $incrementing = true;
+    public $timestamps = false;
 
     public function doable()
     {
