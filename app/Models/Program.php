@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use App\Interfaces\CanDoInterface;
-use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -44,32 +43,31 @@ class Program extends Model implements CanDoInterface
         parent::boot();
 
         static::created(function (CanDoInterface $doable) {
-            try {
-                $activity = Activity::create([
-                    'doable_type' => get_class($doable),
-                    'doable_id' => $doable->id,
-                ]);
-                $activity->saveQuietly();
-            } catch(Exception $e) {
-
-            }
+            $activity = Activity::create([
+                'doable_type' => get_class($doable),
+                'doable_id' => $doable->id,
+            ]);
+            $activity->saveQuietly();
         });
     }
 
+    /**
+     *
+     */
     public function sequences()
     {
-        $this->hasMany(Sequence::class);
+        return $this->hasMany(Sequence::class);
     }
 
     public function activities()
     {
-        $this->belongsToMany(Activity::class)
+        return $this->belongsToMany(Activity::class)
             ->using(ProgramActivity::class);
     }
 
     public function exercises()
     {
-        $this->hasManyThrough(
+        return $this->hasManyThrough(
             Exercise::class,
             ProgramActivity::class,
             'program_id',
@@ -81,7 +79,7 @@ class Program extends Model implements CanDoInterface
 
     public function journals()
     {
-        $this->hasManyThrough(
+        return $this->hasManyThrough(
             Journal::class,
             ProgramActivity::class,
             'program_id',
@@ -93,7 +91,7 @@ class Program extends Model implements CanDoInterface
 
     public function lessons()
     {
-        $this->hasManyThrough(
+        return $this->hasManyThrough(
             Lesson::class,
             ProgramActivity::class,
             'program_id',
@@ -105,7 +103,7 @@ class Program extends Model implements CanDoInterface
 
     public function measures()
     {
-        $this->hasManyThrough(
+        return $this->hasManyThrough(
             Measure::class,
             ProgramActivity::class,
             'program_id',

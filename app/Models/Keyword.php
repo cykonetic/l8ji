@@ -42,6 +42,8 @@ class Keyword extends Model
     use HasFactory;
     use SoftDeletes;
 
+    protected $guarded = [];
+
     public function activities()
     {
         return $this->belongsToMany(Activity::class);

@@ -2,17 +2,20 @@
 
 namespace Database\Factories;
 
-use App\Models\Exercise;
+use App\Models\Keyword;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class ExerciseFactory extends Factory
+class KeywordFactory extends Factory
 {
+    use HasFactory;
+
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = Exercise::class;
+    protected $model = Keyword::class;
 
     /**
      * Define the model's default state.
@@ -22,10 +25,7 @@ class ExerciseFactory extends Factory
     public function definition()
     {
         return [
-            'name' => $this->faker->words(rand(3, 6), true),
-            'description' => $this->faker->paragraph(rand(3, 5)),
-            'url' => $this->faker->url,
-            'duration' => date('H:i:s', $this->faker->numberBetween(240, 600)),
+            'keyword' => $this->faker->word(),
         ];
     }
 }

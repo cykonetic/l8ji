@@ -2,17 +2,17 @@
 
 namespace Database\Factories;
 
-use App\Models\Exercise;
+use App\Models\Measure;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class ExerciseFactory extends Factory
+class MeasureFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = Exercise::class;
+    protected $model = Measure::class;
 
     /**
      * Define the model's default state.
@@ -22,10 +22,9 @@ class ExerciseFactory extends Factory
     public function definition()
     {
         return [
-            'name' => $this->faker->words(rand(3, 6), true),
-            'description' => $this->faker->paragraph(rand(3, 5)),
-            'url' => $this->faker->url,
-            'duration' => date('H:i:s', $this->faker->numberBetween(240, 600)),
+            'class_name', $this->faker->word . 'Conversation',
+            'min_score' => rand(0, 14),
+            'max_score' => rand(15, 70),
         ];
     }
 }

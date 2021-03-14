@@ -36,16 +36,21 @@ class Sequence extends Model
     use HasFactory;
     use SoftDeletes;
 
+    /**
+     * table
+     *
+     * @var string
+     */
     protected $table = 'program_activity';
 
     public function program()
     {
-        $this->belongsTo(Program::class);
+        return $this->belongsTo(Program::class);
     }
 
     public function activty()
     {
-        $this->belongsTo(Activity::class);
+        return $this->belongsTo(Activity::class);
     }
 
     public function exercises()
