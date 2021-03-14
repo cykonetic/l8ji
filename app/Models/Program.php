@@ -17,6 +17,20 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Activity[] $activities
+ * @property-read int|null $activities_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Exercise[] $exercises
+ * @property-read int|null $exercises_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Journal[] $journals
+ * @property-read int|null $journals_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Lesson[] $lessons
+ * @property-read int|null $lessons_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Measure[] $measures
+ * @property-read int|null $measures_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|Program[] $programs
+ * @property-read int|null $programs_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Sequence[] $sequences
+ * @property-read int|null $sequences_count
  * @method static Builder|Program newModelQuery()
  * @method static Builder|Program newQuery()
  * @method static \Illuminate\Database\Query\Builder|Program onlyTrashed()
@@ -51,9 +65,6 @@ class Program extends Model implements CanDoInterface
         });
     }
 
-    /**
-     *
-     */
     public function sequences()
     {
         return $this->hasMany(Sequence::class);
@@ -105,6 +116,18 @@ class Program extends Model implements CanDoInterface
     {
         return $this->hasManyThrough(
             Measure::class,
+            ProgramActivity::class,
+            'program_id',
+            'activty_id',
+            'id',
+            'id'
+        );
+    }
+
+    public function programs()
+    {
+        return $this->hasManyThrough(
+            Program::class,
             ProgramActivity::class,
             'program_id',
             'activty_id',

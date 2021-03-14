@@ -24,6 +24,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property-read int|null $lessons_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Measure[] $measures
  * @property-read int|null $measures_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Program[] $programs
+ * @property-read int|null $programs_count
  * @method static \Illuminate\Database\Eloquent\Builder|Keyword newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Keyword newQuery()
  * @method static \Illuminate\Database\Query\Builder|Keyword onlyTrashed()
@@ -71,4 +73,8 @@ class Keyword extends Model
     {
         return $this->belongsToMany(Measure::class, 'activity_keyword', 'activity_id');
     }
-}
+
+    public function programs()
+    {
+        return $this->belongsToMany(Program::class, 'activity_keyword', 'activity_id');
+    }}
