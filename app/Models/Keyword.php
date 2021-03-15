@@ -39,7 +39,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class Keyword extends Model
 {
-    use HasFactory;
     use SoftDeletes;
 
     protected $guarded = [];
@@ -51,24 +50,63 @@ class Keyword extends Model
 
     public function exercises()
     {
-        return $this->morphedByMany(
+        return $this->hasManyThrough(
             Exercise::class,
-            'activity'
+            ActivityKeyword::class,
+            'program_id',
+            'activity_id',
+            'id',
+            'id'
         );
-    }
-
-    public function journals()
-    {
-        return $this->belongsToMany(Journal::class, 'activity_keyword', 'activity_id');
     }
 
     public function lessons()
     {
-        return $this->belongsToMany(Lesson::class, 'activity_keyword', 'activity_id');
+        return $this->hasManyThrough(
+            Lesson::class,
+            ActivityKeyword::class,
+            'program_id',
+            'activity_id',
+            'id',
+            'id'
+        );
+    }
+
+    public function programs()
+    {
+        return $this->hasManyThrough(
+            Program::class,
+            ActivityKeyword::class,
+            'program_id',
+            'activity_id',
+            'id',
+            'id'
+        );
+    }
+
+    /*
+    public function journals()
+    {
+        return $this->hasManyThrough(
+            Journal::class,
+            ActivityKeyword::class,
+            'program_id',
+            'activity_id',
+            'id',
+            'id'
+        );
     }
 
     public function measures()
     {
-        return $this->belongsToMany(Measure::class, 'activity_keyword', 'activity_id');
+        return $this->hasManyThrough(
+            Measure::class,
+            ActivityKeyword::class,
+            'program_id',
+            'activity_id',
+            'id',
+            'id'
+        );
     }
+    */
 }

@@ -2,17 +2,17 @@
 
 namespace Database\Factories;
 
-use App\Models\Keyword;
+use App\Models\Model;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class KeywordFactory extends Factory
+class ProgranFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = Keyword::class;
+    protected $model = Model::class;
 
     /**
      * Define the model's default state.

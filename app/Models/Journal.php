@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use App\Interfaces\CanDoInterface;
-use App\Traits\CanDoTrait;
+use App\Interfaces\ICanDo;
+use App\Traits\CanDo;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -35,11 +35,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Query\Builder|Journal withoutTrashed()
  * @mixin \Eloquent
  */
-class Journal extends Model implements CanDoInterface
+class Journal extends Model implements ICanDo
 {
     use HasFactory;
     use SoftDeletes;
-    use CanDoTrait;
+    use CanDo;
 
     protected $guarded = [];
 }

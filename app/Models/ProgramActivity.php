@@ -41,7 +41,7 @@ class ProgramActivity extends Pivot
     public function exercises()
     {
         return $this->morphedByMany(
-            Measure::class,
+            Exercise::class,
             'doable',
             'activities',
             'id',
@@ -89,4 +89,16 @@ class ProgramActivity extends Pivot
             'id'
         );
     }
-}
+
+    public function programs()
+    {
+        return $this->morphedByMany(
+            Program::class,
+            'doable',
+            'activities',
+            'id',
+            'doable_id',
+            'activity_id',
+            'id'
+        );
+    }}

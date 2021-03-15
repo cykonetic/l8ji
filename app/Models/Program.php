@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use App\Interfaces\CanDoInterface;
+use App\Interfaces\ICanDo;
+use App\Traits\CanDo;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -31,29 +33,14 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Query\Builder|Program withoutTrashed()
  * @mixin \Eloquent
  */
-class Program extends Model implements CanDoInterface
+class Program extends Model implements ICanDo
 {
     use HasFactory;
     use SoftDeletes;
+    use CanDo;
 
     protected $guarded = [];
 
-    public static function boot()
-    {
-        parent::boot();
-
-        static::created(function (CanDoInterface $doable) {
-            $activity = Activity::create([
-                'doable_type' => get_class($doable),
-                'doable_id' => $doable->id,
-            ]);
-            $activity->saveQuietly();
-        });
-    }
-
-    /**
-     *
-     */
     public function sequences()
     {
         return $this->hasMany(Sequence::class);
@@ -71,7 +58,7 @@ class Program extends Model implements CanDoInterface
             Exercise::class,
             ProgramActivity::class,
             'program_id',
-            'activty_id',
+            'activity_id',
             'id',
             'id'
         );
@@ -83,7 +70,7 @@ class Program extends Model implements CanDoInterface
             Journal::class,
             ProgramActivity::class,
             'program_id',
-            'activty_id',
+            'activity_id',
             'id',
             'id'
         );
@@ -95,7 +82,7 @@ class Program extends Model implements CanDoInterface
             Lesson::class,
             ProgramActivity::class,
             'program_id',
-            'activty_id',
+            'activity_id',
             'id',
             'id'
         );
@@ -107,7 +94,7 @@ class Program extends Model implements CanDoInterface
             Measure::class,
             ProgramActivity::class,
             'program_id',
-            'activty_id',
+            'activity_id',
             'id',
             'id'
         );

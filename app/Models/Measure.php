@@ -2,7 +2,8 @@
 
 namespace App\Models;
 
-use App\Interfaces\CanDoInterface;
+use App\Interfaces\ICanDo;
+use App\Traits\CanDo;
 use App\Traits\CanDoTrait;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -35,11 +36,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Query\Builder|Measure withoutTrashed()
  * @mixin \Eloquent
  */
-class Measure extends Model implements CanDoInterface
+class Measure extends Model implements ICanDo
 {
     use HasFactory;
     use SoftDeletes;
-    use CanDoTrait;
+    use CanDo;
 
     protected $guarded = [];
 }
