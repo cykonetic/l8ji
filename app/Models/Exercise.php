@@ -2,8 +2,11 @@
 
 namespace App\Models;
 
-use App\Interfaces\CanDoInterface;
-use App\Traits\CanDoTrait;
+
+use App\Interfaces\ICanDo;
+use App\Interfaces\IKeywords;
+use App\Traits\CanDo;
+
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -37,11 +40,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Query\Builder|Exercise withoutTrashed()
  * @mixin \Eloquent
  */
-class Exercise extends Model implements CanDoInterface
+class Exercise extends Model implements ICanDo, IKeywords
 {
     use HasFactory;
     use SoftDeletes;
-    use CanDoTrait;
+    use CanDo;
 
     protected $guarded = [];
 }

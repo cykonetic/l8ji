@@ -35,37 +35,68 @@ class ActivityKeyword extends Pivot
 
     public function exercises()
     {
-        return $this->with([
-            'activity' => function ($query) {
-                return $query->morphWith([Exercise::class]);
-            },
-        ]);
-    }
-
-    public function journals()
-    {
-        return $this->with([
-            'activity' => function ($query) {
-                return $query->morphWith([Journal::class]);
-            },
-        ]);
+        return $this->morphedByMany(
+            Exercise::class,
+            'doable',
+            'activities',
+            'id',
+            'doable_id',
+            'activity_id',
+            'id'
+        );
     }
 
     public function lessons()
     {
-        return $this->with([
-            'activity' => function ($query) {
-                return $query->morphWith([Lesson::class]);
-            },
-        ]);
+        return $this->morphedByMany(
+            Lesson::class,
+            'doable',
+            'activities',
+            'id',
+            'doable_id',
+            'activity_id',
+            'id'
+        );
+    }
+
+    public function programs()
+    {
+        return $this->morphedByMany(
+            Program::class,
+            'doable',
+            'activities',
+            'id',
+            'doable_id',
+            'activity_id',
+            'id'
+        );
+    }
+
+    /*
+    public function journals()
+    {
+        return $this->morphedByMany(
+            Journal::class,
+            'doable',
+            'activities',
+            'id',
+            'doable_id',
+            'activity_id',
+            'id'
+        );
     }
 
     public function measures()
     {
-        return $this->with([
-            'activity' => function ($query) {
-                return $query->morphWith([Measure::class]);
-            },
-        ]);
+        return $this->morphedByMany(
+            Measure::class,
+            'doable',
+            'activities',
+            'id',
+            'doable_id',
+            'activity_id',
+            'id'
+        );
     }
+    */
 }

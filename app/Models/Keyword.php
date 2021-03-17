@@ -24,8 +24,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property-read int|null $lessons_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Measure[] $measures
  * @property-read int|null $measures_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Program[] $programs
- * @property-read int|null $programs_count
  * @method static \Illuminate\Database\Eloquent\Builder|Keyword newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Keyword newQuery()
  * @method static \Illuminate\Database\Query\Builder|Keyword onlyTrashed()
@@ -41,40 +39,75 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class Keyword extends Model
 {
-    use HasFactory;
     use SoftDeletes;
 
     protected $guarded = [];
 
-    public function activities()
+    
+public function activities()
     {
         return $this->belongsToMany(Activity::class);
     }
 
     public function exercises()
     {
-        return $this->morphedByMany(
+        return $this->hasManyThrough(
             Exercise::class,
-            'activity'
+            ActivityKeyword::class,
+            'program_id',
+            'activity_id',
+            'id',
+            'id'
         );
-    }
-
-    public function journals()
-    {
-        return $this->belongsToMany(Journal::class, 'activity_keyword', 'activity_id');
     }
 
     public function lessons()
     {
-        return $this->belongsToMany(Lesson::class, 'activity_keyword', 'activity_id');
+        return $this->hasManyThrough(
+            Lesson::class,
+            ActivityKeyword::class,
+            'program_id',
+            'activity_id',
+            'id',
+            'id'
+        );
+    }
+
+    public function lessons()
+    {
+        return $this->hasManyThrough(
+            Program::class,
+            ActivityKeyword::class,
+            'program_id',
+            'activity_id',
+            'id',
+            'id'
+        );
+    }
+
+    /*
+    public function journals()
+    {
+        return $this->hasManyThrough(
+            Journal::class,
+            ActivityKeyword::class,
+            'program_id',
+            'activity_id',
+            'id',
+            'id'
+        );
     }
 
     public function measures()
     {
-        return $this->belongsToMany(Measure::class, 'activity_keyword', 'activity_id');
+        return $this->hasManyThrough(
+            Measure::class,
+            ActivityKeyword::class,
+            'program_id',
+            'activity_id',
+            'id',
+            'id'
+        );
     }
-
-    public function programs()
-    {
-        return $this->belongsToMany(Program::class, 'activity_keyword', 'activity_id');
-    }}
+    */
+}

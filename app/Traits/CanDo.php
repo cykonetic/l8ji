@@ -3,22 +3,22 @@
 namespace App\Traits;
 
 use App\Interfaces\CanDoInterface;
+use App\Interfaces\ICanDo;
 use App\Models\Activity;
 use Exception;
 
-trait CanDoTrait
+trait CanDo
 {
     public static function boot()
     {
         parent::boot();
 
-        static::created(function (CanDoInterface $doable) {
+        static::created(function (ICanDo $doable) {
             try {
-                $activity = Activity::create([
+                Activity::create([
                     'doable_type' => get_class($doable),
                     'doable_id' => $doable->id,
                 ]);
-                $activity->saveQuietly();
             } catch(Exception $e) {
 
             }

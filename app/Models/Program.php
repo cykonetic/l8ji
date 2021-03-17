@@ -17,20 +17,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Activity[] $activities
- * @property-read int|null $activities_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Exercise[] $exercises
- * @property-read int|null $exercises_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Journal[] $journals
- * @property-read int|null $journals_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Lesson[] $lessons
- * @property-read int|null $lessons_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Measure[] $measures
- * @property-read int|null $measures_count
- * @property-read \Illuminate\Database\Eloquent\Collection|Program[] $programs
- * @property-read int|null $programs_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Sequence[] $sequences
- * @property-read int|null $sequences_count
  * @method static Builder|Program newModelQuery()
  * @method static Builder|Program newQuery()
  * @method static \Illuminate\Database\Query\Builder|Program onlyTrashed()
@@ -45,25 +31,14 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Query\Builder|Program withoutTrashed()
  * @mixin \Eloquent
  */
-class Program extends Model implements CanDoInterface
+class Program extends Model implements ICanDo
 {
     use HasFactory;
     use SoftDeletes;
+    use CanDo;
 
     protected $guarded = [];
 
-    public static function boot()
-    {
-        parent::boot();
-
-        static::created(function (CanDoInterface $doable) {
-            $activity = Activity::create([
-                'doable_type' => get_class($doable),
-                'doable_id' => $doable->id,
-            ]);
-            $activity->saveQuietly();
-        });
-    }
 
     public function sequences()
     {
@@ -82,7 +57,7 @@ class Program extends Model implements CanDoInterface
             Exercise::class,
             ProgramActivity::class,
             'program_id',
-            'activty_id',
+            'activity_id',
             'id',
             'id'
         );
@@ -94,7 +69,7 @@ class Program extends Model implements CanDoInterface
             Journal::class,
             ProgramActivity::class,
             'program_id',
-            'activty_id',
+            'activity_id',
             'id',
             'id'
         );
@@ -106,7 +81,7 @@ class Program extends Model implements CanDoInterface
             Lesson::class,
             ProgramActivity::class,
             'program_id',
-            'activty_id',
+            'activity_id',
             'id',
             'id'
         );
@@ -118,19 +93,7 @@ class Program extends Model implements CanDoInterface
             Measure::class,
             ProgramActivity::class,
             'program_id',
-            'activty_id',
-            'id',
-            'id'
-        );
-    }
-
-    public function programs()
-    {
-        return $this->hasManyThrough(
-            Program::class,
-            ProgramActivity::class,
-            'program_id',
-            'activty_id',
+            'activity_id',
             'id',
             'id'
         );
