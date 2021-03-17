@@ -2,11 +2,9 @@
 
 namespace App\Models;
 
-use App\Traits\IsProgramActivity;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-
 /**
  * App\Models\Sequence
  *
@@ -17,18 +15,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
- * @property-read \App\Models\Activity $activity
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Measure[] $exercises
- * @property-read int|null $exercises_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Journal[] $journals
- * @property-read int|null $journals_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Lesson[] $lessons
- * @property-read int|null $lessons_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Measure[] $measures
- * @property-read int|null $measures_count
- * @property-read \App\Models\Program $program
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Program[] $programs
- * @property-read int|null $programs_count
  * @method static \Illuminate\Database\Eloquent\Builder|Sequence newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Sequence newQuery()
  * @method static \Illuminate\Database\Query\Builder|Sequence onlyTrashed()
@@ -47,7 +33,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Sequence extends Model
 {
     use HasFactory;
-    use IsProgramActivity;
     use SoftDeletes;
 
     protected $table = 'program_activity';

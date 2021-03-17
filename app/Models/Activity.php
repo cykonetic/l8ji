@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
+use App\Models\Pivots\ActivityKeyword;
+use App\Models\Pivots\ProgramActivity;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\MorphPivot;
 
 /**
  * App\Models\Activity
@@ -24,12 +25,9 @@ use Illuminate\Database\Eloquent\Relations\MorphPivot;
  * @method static \Illuminate\Database\Eloquent\Builder|Activity whereId($value)
  * @mixin \Eloquent
  */
-class Activity extends MorphPivot
+class Activity extends Model
 {
     protected $guarded = [];
-    protected $table = 'activities';
-
-    public $incrementing = true;
     public $timestamps = false;
 
     public function doable()
@@ -39,7 +37,8 @@ class Activity extends MorphPivot
 
     public function keywords()
     {
-        return $this->belongsToMany(Keyword::class);
+        return $this->belongsToMany(Keyword::class)
+            ->using(ActivityKeyword::class);
     }
 
     public function programs()
@@ -48,29 +47,3 @@ class Activity extends MorphPivot
             ->using(ProgramActivity::class);
     }
 }
-/*
-
-
-
-    public function activities()
-    {
-        if (in_array('activities', get_class_methods($this->activity_type), true)) {
-            return $this->belongsToMany(Activity::class, 'program_activity')
-            ->withPivot('sequence');
-        }
-
-        return null;
-    }
-
-    public function detail()
-    {
-        if (in_array('detail', get_class_methods($this->activity_type), true)) {
-            $detailClassName = $this->activity_type.'Detail';
-            $foreignKeyName = strtolower(class_basename($this->activity_type)).'_id';
-
-            return $this->hasOne($detailClassName, $foreignKeyName);
-        }
-
-        return null;
-    }
-*/

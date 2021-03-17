@@ -2,9 +2,8 @@
 
 namespace App\Models;
 
-use App\Interfaces\ICanDo;
-use App\Traits\CanDo;
-use App\Traits\CanDoTrait;
+use App\Models\Interfaces\ICanDo;
+use App\Models\Traits\CanDo;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -21,6 +20,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \App\Models\Activity|null $activity
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Program[] $programs
+ * @property-read int|null $programs_count
  * @method static Builder|Measure newModelQuery()
  * @method static Builder|Measure newQuery()
  * @method static \Illuminate\Database\Query\Builder|Measure onlyTrashed()

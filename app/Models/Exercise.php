@@ -2,16 +2,14 @@
 
 namespace App\Models;
 
-
-use App\Interfaces\ICanDo;
-use App\Interfaces\IKeywords;
-use App\Traits\CanDo;
-
-use Illuminate\Database\Eloquent\Builder;
+use App\Models\Interfaces\ICanDo;
+use App\Models\Interfaces\IKeywords;
+use App\Models\Pivots\ActivityKeyword;
+use App\Models\Traits\CanDo;
+use App\Models\Traits\Keywords;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-
 /**
  * App\Models\Exercise
  *
@@ -24,18 +22,22 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \App\Models\Activity|null $activity
- * @method static Builder|Exercise newModelQuery()
- * @method static Builder|Exercise newQuery()
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Keyword[] $keywords
+ * @property-read int|null $keywords_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Program[] $programs
+ * @property-read int|null $programs_count
+ * @method static \Illuminate\Database\Eloquent\Builder|Exercise newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Exercise newQuery()
  * @method static \Illuminate\Database\Query\Builder|Exercise onlyTrashed()
- * @method static Builder|Exercise query()
- * @method static Builder|Exercise whereCreatedAt($value)
- * @method static Builder|Exercise whereDeletedAt($value)
- * @method static Builder|Exercise whereDescription($value)
- * @method static Builder|Exercise whereDuration($value)
- * @method static Builder|Exercise whereId($value)
- * @method static Builder|Exercise whereName($value)
- * @method static Builder|Exercise whereUpdatedAt($value)
- * @method static Builder|Exercise whereUrl($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Exercise query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Exercise whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Exercise whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Exercise whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Exercise whereDuration($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Exercise whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Exercise whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Exercise whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Exercise whereUrl($value)
  * @method static \Illuminate\Database\Query\Builder|Exercise withTrashed()
  * @method static \Illuminate\Database\Query\Builder|Exercise withoutTrashed()
  * @mixin \Eloquent
@@ -45,6 +47,7 @@ class Exercise extends Model implements ICanDo, IKeywords
     use HasFactory;
     use SoftDeletes;
     use CanDo;
+    use Keywords;
 
     protected $guarded = [];
 }
