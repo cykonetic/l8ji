@@ -99,7 +99,7 @@ class InitDataSeeder extends Seeder
                 // use up any keywords that may already exist
                 $existing = array_values(array_intersect($pool, array_keys($this->keywords))) ?? [];
                 for ($made = 0; $made < $needed; ++$made) {
-                    $activity = $it->activity()->first();
+                    $activity = $it->activity()->get()->first();
 
                     if (count($existing)) {
                         $existing = array_values($existing);
@@ -114,7 +114,7 @@ class InitDataSeeder extends Seeder
                         array_splice($pool, $use, 1);
 
                         $this->keywords[$keyword] = Keyword::create(['keyword' => $keyword]);
-                        $this->keywords[$keyword]->save();
+                        //$this->keywords[$keyword]->save();
                     } else {
                         throw(new Exception('No more word to use!'));
                     }
@@ -134,7 +134,7 @@ class InitDataSeeder extends Seeder
                     'program_id' => $it->id,
                     'sequence' => $position,
                 ]);
-                $sequence->save();
+                //$sequence->save();
                 ++$position;
             }
         }
@@ -144,15 +144,15 @@ class InitDataSeeder extends Seeder
     {
         switch ($thing) {
             case Exercise::class:
-                return (new ExerciseFactory())->make();
+                return Exercise::factory()->make();
             case Journal::class:
-                return (new JournalFactory())->make();
+                return Journal::factory()->make();
             case Lesson::class:
-                return (new LessonFactory())->make();
+                return Lesson::factory()->make();
             case Measure::class:
-                return (new MeasureFactory())->make();
+                return Measure::factory()->make();
             case Program::class:
-                return (new ProgramFactory())->make();
+                return Program::factory()->make();
             case User::class:
                 return User::factory()->make();
         }
