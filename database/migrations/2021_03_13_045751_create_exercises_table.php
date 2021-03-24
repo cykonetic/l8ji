@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateExerciseDetailsTable extends Migration
+class CreateExercisesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,15 @@ class CreateExerciseDetailsTable extends Migration
      */
     public function up()
     {
-        Schema::create('exercise_details', function (Blueprint $table) {
+        Schema::create('exercises', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('exercise_id');
-            $table->string('vimeo_link');
-
+            $table->string('name');
+            $table->text('description');
+            $table->string('url');
+            $table->unsignedInteger('duration');
             $table->timestamps();
             $table->softDeletes();
-        });
+                });
     }
 
     /**
@@ -30,6 +31,6 @@ class CreateExerciseDetailsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('exercise_details');
+        Schema::dropIfExists('exercises');
     }
 }

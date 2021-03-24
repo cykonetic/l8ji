@@ -15,15 +15,13 @@ class CreateActivitiesTable extends Migration
     {
         Schema::create('activities', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('descritption');
 
-            $table->string('type');
+            $table->morphs('doable');
 
             $table->timestamps();
             $table->softDeletes();
 
-            $table->index(['type', 'id']);
+            $table->unique(['doable_id', 'doable_type', ], 'doable');
         });
     }
 

@@ -2,35 +2,87 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Pivots\ActivityKeyword;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
+/**
+ * App\Models\Keyword
+ *
+ * @property int $id
+ * @property string $keyword
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Activity[] $activities
+ * @property-read int|null $activities_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Exercise[] $exercises
+ * @property-read int|null $exercises_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Lesson[] $lessons
+ * @property-read int|null $lessons_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Program[] $programs
+ * @property-read int|null $programs_count
+ * @method static \Illuminate\Database\Eloquent\Builder|Keyword newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Keyword newQuery()
+ * @method static \Illuminate\Database\Query\Builder|Keyword onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|Keyword query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Keyword whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Keyword whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Keyword whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Keyword whereKeyword($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Keyword whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|Keyword withTrashed()
+ * @method static \Illuminate\Database\Query\Builder|Keyword withoutTrashed()
+ * @mixin \Eloquent
+ */
 class Keyword extends Model
 {
-    use HasFactory;
+    use SoftDeletes;
 
-    public function activities()
+    protected $guarded = [];
+
+
+public function activities(): BelongsToMany
     {
-        return $this->belongsToMany(Activity::class);
+        return $this->belongsToMany(Activity::class)
+            ->using(ActivityKeyword::class)
+            ->withTimestamps();
     }
 
-    public function exercises()
+    public function exercises(): HasManyThrough
     {
-        return $this->belongsToMany(Exercise::class, 'activity_keyword', 'activity_id');
+        return $this->hasManyThrough(
+            Exercise::class,
+            ActivityKeyword::class,
+            'program_id',
+            'activity_id',
+            'id',
+            'id'
+        );
     }
 
-    public function journals()
+    public function lessons(): HasManyThrough
     {
-        return $this->belongsToMany(Journal::class, 'activity_keyword', 'activity_id');
+        return $this->hasManyThrough(
+            Lesson::class,
+            ActivityKeyword::class,
+            'program_id',
+            'activity_id',
+            'id',
+            'id'
+        );
     }
-
-    public function lessons()
+    public function programs(): HasManyThrough
     {
-        return $this->belongsToMany(Lesson::class, 'activity_keyword', 'activity_id');
-    }
-
-    public function measures()
-    {
-        return $this->belongsToMany(Measure::class, 'activity_keyword', 'activity_id');
+        return $this->hasManyThrough(
+            Program::class,
+            ActivityKeyword::class,
+            'program_id',
+            'activity_id',
+            'id',
+            'id'
+        );
     }
 }

@@ -21,12 +21,12 @@ RUN apt-get update -qq \
         gosu \
         libcap2-bin \
         mysql-client \
+        sqlite3 \
         supervisor \
         unzip \
         zip \
 #        libpng-dev \
 #        python2 \
-#        sqlite3 \
     && mkdir -p ~/.gnupg \
     && chmod 600 ~/.gnupg \
     && echo "disable-ipv6" >> ~/.gnupg/dirmngr.conf \
@@ -37,31 +37,35 @@ RUN apt-get update -qq \
     && curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
     && echo "deb https://dl.yarnpkg.com/debian/ stable main" > /etc/apt/sources.list.d/yarn.list \
     && apt-get update -qq \
-    && apt-get install -yq --no-install-recommends \
+    && apt-get install -yq \
         nodejs \
         php8.0-bcmath \
+        php8.0-bz2 \
         php8.0-cli \
         php8.0-curl \
         php8.0-gd \
+        php8.0-gmp \
         php8.0-igbinary \
+        php8.0-imagick \
+        php8.0-imap \
         php8.0-intl \
         php8.0-mbstring \
+        php8.0-memcached \
         php8.0-msgpack \
         php8.0-mysql \
         php8.0-pcov \
         php8.0-readline \
         php8.0-redis \
-        php8.0-xdebug\
+        php8.0-soap \
+        php8.0-sqlite3 \
+        php8.0-xdebug \
+        php8.0-uuid \
         php8.0-xml \
         php8.0-zip \
         yarn \
 #        php8.0-dev \
-#        php8.0-imap \
 #        php8.0-ldap \
-#        php8.0-memcached \
 #        php8.0-pgsql \
-#        php8.0-soap \
-#        php8.0-sqlite3 \
     && apt-get -y autoremove \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \

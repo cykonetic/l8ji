@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateMeasureDetailsTable extends Migration
+class CreateLessonsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,14 @@ class CreateMeasureDetailsTable extends Migration
      */
     public function up()
     {
-        Schema::create('measure_details', function (Blueprint $table) {
+        Schema::create('lessons', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('measure_id');
-            $table->string('conversation_class');
-            $table->float('min_score');
-            $table->float('max_score');
+            $table->string('name');
+            $table->text('description');
+            $table->string('url');
+            $table->unsignedInteger('duration');
             $table->timestamps();
-        });
+            $table->softDeletes(); });
     }
 
     /**
@@ -30,6 +30,6 @@ class CreateMeasureDetailsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('measure_details');
+        Schema::dropIfExists('lessons');
     }
 }

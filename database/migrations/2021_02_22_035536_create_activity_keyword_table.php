@@ -15,7 +15,9 @@ class CreateActivityKeywordTable extends Migration
     {
         Schema::create('activity_keyword', function (Blueprint $table) {
             $table->unsignedBigInteger('activity_id');
-            $table->unsignedBigInteger('keyword_id');
+            $table->unsignedBigInteger('keyword_id')->index('keyworded');
+            $table->timestamps();
+
             $table->primary(['activity_id', 'keyword_id']);
         });
     }
