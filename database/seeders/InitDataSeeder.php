@@ -2,28 +2,30 @@
 
 namespace Database\Seeders;
 
-use App\Interfaces\ICanDo;
 use App\Models\Activity;
 use App\Models\Exercise;
+use App\Models\Interfaces\IKeywords;
 use App\Models\Journal;
 use App\Models\Keyword;
 use App\Models\Lesson;
 use App\Models\Measure;
+use App\Models\Pivots\ProgramActivity;
 use App\Models\Program;
+use App\Models\Sequence;
 use App\Models\User;
 use Database\Factories\ExerciseFactory;
-use Database\Factories\KeywordFactory;
-use Database\Factories\UserFactory;
+use Database\Factories\JournalFactory;
+use Database\Factories\LessonFactory;
+use Database\Factories\MeasureFactory;
+use Database\Factories\ProgramFactory;
+use Exception;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Seeder;
-use Illuminate\Notifications\Action;
 
 class InitDataSeeder extends Seeder
 {
-    /** @var string[] */
-    private $words;
-
-    /** @var string[] */
-    private $keywords;
+    /** @var Keyword[] */
+    private $keywords = [];
 
     /** @var array */
     private $makeThings;
@@ -38,7 +40,7 @@ class InitDataSeeder extends Seeder
                 'count' => 4,
                 'related' => [
                     Keyword::class => [
-                        'count' => rand(1,3)],
+                        'count' => rand(1, 3), ],
                 ],
             ],
             Journal::class => [
@@ -48,7 +50,7 @@ class InitDataSeeder extends Seeder
                 'count' => 10,
                 'related' => [
                     Keyword::class => [
-                        'count' => rand(1,3),
+                        'count' => rand(1, 3),
                     ],
                 ],
             ],
@@ -59,10 +61,10 @@ class InitDataSeeder extends Seeder
                 'count' => 2,
                 'related' => [
                     Activity::class => [
-                        'count' => rand(5,10),
+                        'count' => rand(5, 10),
                     ],
                     Keyword::class => [
-                        'count' => rand(3,7),
+                        'count' => rand(3, 7),
                     ],
                 ],
             ],
@@ -77,7 +79,7 @@ class InitDataSeeder extends Seeder
     public function run()
     {
         foreach($this->makeThings as $thing => $details) {
-            for($$made = 0; $made < $details['count']; ++$made) {
+            for($made = 0; $made < $details['count']; ++$made) {
                 $this->makeThing($thing, $details['related'] ?? []);
             }
 
@@ -87,41 +89,72 @@ class InitDataSeeder extends Seeder
 
     private function makeThing($thing, $related)
     {
-        $it = ($thing)::factory()->make();
+        $it = $this->getThing($thing);
+        $it->save();
 
-        if (!$it instanceof ICanDo) {
-            return;
-        }
-
-        if (in_array('keywords', get_class_methods($it))) {
-            if (!(isset($related[Keyword::class]) && isset($related[Keyword::class]['count']))) {
-                return;
-            }
-            $pool = array_unique(explode(' ', $it->name.' '.$it->description));
-            $existing = array_intersect(
-                $pool,
-                $this->keywords,
-            );
-            $needed = $related[Keyword::class]['count'] - count($existing);
+        if ($it instanceof IKeywords && isset($related[Keyword::class])) {
+            $needed = $related[Keyword::class]['count'] || 0;
             if ($needed > 0) {
-                $available = array_diff($pool, $this->keyword);
-                for($k = 0; $k < $needed; ++$k) {
-                    $new = $available[rand(0, count($available) - 1 )];
-                    $it->keywords()->create(['keyword' => $new]);
-                    $this->keywords[] = $new;
+                $pool = array_filter(array_unique(explode(' ', $it->name . ' ' . $it->description)));
+                // use up any keywords that may already exist
+                $existing = array_values(array_intersect($pool, array_keys($this->keywords))) ?? [];
+                for ($made = 0; $made < $needed; ++$made) {
+                    $activity = $it->activity()->first();
+
+                    if (count($existing)) {
+                        $existing = array_values($existing);
+                        $use = rand(0, count($existing) - 1);
+                        $keyword = $existing[$use];
+                        array_splice($existing, $use, 1);
+
+                    } elseif (count($pool)) {
+                        $pool = array_values($pool);
+                        $use = rand(0, count($pool) - 1);
+                        $keyword = $pool[$use];
+                        array_splice($pool, $use, 1);
+
+                        $this->keywords[$keyword] = Keyword::create(['keyword' => $keyword]);
+                        $this->keywords[$keyword]->save();
+                    } else {
+                        throw(new Exception('No more word to use!'));
+                    }
+                    $activity->keywords()->attach($this->keywords[$keyword]);
                 }
             }
         }
 
-        if ($it instanceof Program) {
+        if (get_class($it) === Program::class) {
             $needed = $related[Activity::class]['count'] ?? 0;
             $position = 1;
             $poolSize = Activity::all()->count();
             while ($position <= $needed) {
                 $id = rand(1, $poolSize);
-                $activity = Activity::find($id);
-                $it->activity()->save($activity);
+                $sequence = Sequence::create([
+                    'activity_id' => $id,
+                    'program_id' => $it->id,
+                    'sequence' => $position,
+                ]);
+                $sequence->save();
+                ++$position;
             }
+        }
+    }
+
+    private function getThing(string $thing): Model
+    {
+        switch ($thing) {
+            case Exercise::class:
+                return (new ExerciseFactory())->make();
+            case Journal::class:
+                return (new JournalFactory())->make();
+            case Lesson::class:
+                return (new LessonFactory())->make();
+            case Measure::class:
+                return (new MeasureFactory())->make();
+            case Program::class:
+                return (new ProgramFactory())->make();
+            case User::class:
+                return User::factory()->make();
         }
     }
 }

@@ -4,7 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
+
 /**
  * App\Models\Sequence
  *
@@ -15,6 +17,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read \App\Models\Activity|null $activity
+ * @property-read \App\Models\Program|null $program
  * @method static \Illuminate\Database\Eloquent\Builder|Sequence newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Sequence newQuery()
  * @method static \Illuminate\Database\Query\Builder|Sequence onlyTrashed()
@@ -36,4 +40,14 @@ class Sequence extends Model
     use SoftDeletes;
 
     protected $table = 'program_activity';
+
+    public function activity(): HasOne
+    {
+        return $this->hasOne(Activity::class);
+    }
+
+    public function program(): HasOne
+    {
+        return $this->hasOne(Program::class);
+    }
 }

@@ -16,12 +16,12 @@ class CreateExercisesTable extends Migration
         Schema::create('exercises', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('description');
+            $table->text('description');
             $table->string('url');
-            $table->time('duration');
+            $table->unsignedInteger('duration');
             $table->timestamps();
             $table->softDeletes();
-        });
+                });
     }
 
     /**

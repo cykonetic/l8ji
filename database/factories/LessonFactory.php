@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Models\Exercise;
+use App\Models\Lesson;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class LessonFactory extends Factory
@@ -12,7 +12,7 @@ class LessonFactory extends Factory
      *
      * @var string
      */
-    protected $model = Exercise::class;
+    protected $model = Lesson::class;
 
     /**
      * Define the model's default state.
@@ -25,7 +25,7 @@ class LessonFactory extends Factory
             'name' => $this->faker->words(rand(3, 6), true),
             'description' => $this->faker->paragraph(rand(3, 5)),
             'url' => $this->faker->url,
-            'duration' => date('H:i:s', $this->faker->numberBetween(240, 600)),
+            'duration' => $this->faker->numberBetween(240, 600),
         ];
     }
 }

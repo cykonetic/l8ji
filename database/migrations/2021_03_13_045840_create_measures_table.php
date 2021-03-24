@@ -15,13 +15,12 @@ class CreateMeasuresTable extends Migration
     {
         Schema::create('measures', function (Blueprint $table) {
             $table->id();
-            $table->string('class_name');
+            $table->string('conversation');
             $table->float('min_score');
             $table->float('max_score');
-
             $table->timestamps();
             $table->softDeletes();
-         });
+        });
     }
 
     /**

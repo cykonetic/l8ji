@@ -4,8 +4,9 @@ namespace App\Models;
 
 use App\Models\Pivots\ActivityKeyword;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\SoftDeletes;
-
 
 /**
  * App\Models\Keyword
@@ -43,12 +44,14 @@ class Keyword extends Model
     protected $guarded = [];
 
 
-public function activities()
+public function activities(): BelongsToMany
     {
-        return $this->belongsToMany(Activity::class);
+        return $this->belongsToMany(Activity::class)
+            ->using(ActivityKeyword::class)
+            ->withTimestamps();
     }
 
-    public function exercises()
+    public function exercises(): HasManyThrough
     {
         return $this->hasManyThrough(
             Exercise::class,
@@ -60,7 +63,7 @@ public function activities()
         );
     }
 
-    public function lessons()
+    public function lessons(): HasManyThrough
     {
         return $this->hasManyThrough(
             Lesson::class,
@@ -71,7 +74,7 @@ public function activities()
             'id'
         );
     }
-    public function programs()
+    public function programs(): HasManyThrough
     {
         return $this->hasManyThrough(
             Program::class,

@@ -21,11 +21,9 @@ class CreateProgramActivityTable extends Migration
             $table->unsignedSmallInteger('sequence')->nullable();
 
             $table->timestamps();
-            // we can create the field but the model doesn't support it
             $table->softDeletes();
 
-            $table->index(['program_id', 'activity_id'], 'sequenceable');
-
+            $table->index(['program_id', 'activity_id', 'sequence'], 'sequenceable');
         });
     }
 

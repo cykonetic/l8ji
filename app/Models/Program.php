@@ -8,9 +8,10 @@ use App\Models\Pivots\ProgramActivity;
 use App\Models\Traits\CanDo;
 use App\Models\Traits\Keywords;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
 /**
  * App\Models\Program
@@ -40,7 +41,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property-read int|null $sequences_count
  * @method static Builder|Program newModelQuery()
  * @method static Builder|Program newQuery()
- * @method static \Illuminate\Database\Query\Builder|Program onlyTrashed()
  * @method static Builder|Program query()
  * @method static Builder|Program whereCreatedAt($value)
  * @method static Builder|Program whereDeletedAt($value)
@@ -48,31 +48,28 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static Builder|Program whereId($value)
  * @method static Builder|Program whereName($value)
  * @method static Builder|Program whereUpdatedAt($value)
- * @method static \Illuminate\Database\Query\Builder|Program withTrashed()
- * @method static \Illuminate\Database\Query\Builder|Program withoutTrashed()
  * @mixin \Eloquent
  */
 class Program extends Model implements ICanDo, IKeywords
 {
-    use HasFactory;
-    use SoftDeletes;
     use CanDo;
     use Keywords;
 
     protected $guarded = [];
 
-    public function sequences()
+    public function sequences(): HasMany
     {
         return $this->hasMany(Sequence::class);
     }
 
-    public function activities()
+    public function activities(): BelongsToMany
     {
-        return $this->belongsToMany(Activity::class)
-            ->using(ProgramActivity::class);
+        return $this->belongsToMany(Activity::class, 'program_activity')
+            ->using(ProgramActivity::class)
+            ->withTimestamps();
     }
 
-    public function exercises()
+    public function exercises(): HasManyThrough
     {
         return $this->hasManyThrough(
             Exercise::class,
@@ -84,7 +81,7 @@ class Program extends Model implements ICanDo, IKeywords
         );
     }
 
-    public function journals()
+    public function journals(): HasManyThrough
     {
         return $this->hasManyThrough(
             Journal::class,
@@ -96,7 +93,7 @@ class Program extends Model implements ICanDo, IKeywords
         );
     }
 
-    public function lessons()
+    public function lessons(): HasManyThrough
     {
         return $this->hasManyThrough(
             Lesson::class,
@@ -108,7 +105,7 @@ class Program extends Model implements ICanDo, IKeywords
         );
     }
 
-    public function measures()
+    public function measures(): HasManyThrough
     {
         return $this->hasManyThrough(
             Measure::class,
@@ -120,7 +117,7 @@ class Program extends Model implements ICanDo, IKeywords
         );
     }
 
-    public function programs()
+    public function programs(): HasManyThrough
     {
         return $this->hasManyThrough(
             Program::class,

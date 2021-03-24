@@ -22,7 +22,7 @@ class MeasureFactory extends Factory
     public function definition()
     {
         return [
-            'class_name', $this->faker->word . 'Conversation',
+            'conversation' => $this->faker->word() . 'Conversation',
             'min_score' => rand(0, 14),
             'max_score' => rand(15, 70),
         ];

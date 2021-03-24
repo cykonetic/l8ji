@@ -5,15 +5,13 @@ namespace App\Models;
 use App\Models\Interfaces\ICanDo;
 use App\Models\Traits\CanDo;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * App\Models\Measure
  *
  * @property int $id
- * @property string $class_name
+ * @property string $conversation
  * @property float $min_score
  * @property float $max_score
  * @property \Illuminate\Support\Carbon|null $created_at
@@ -24,23 +22,18 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property-read int|null $programs_count
  * @method static Builder|Measure newModelQuery()
  * @method static Builder|Measure newQuery()
- * @method static \Illuminate\Database\Query\Builder|Measure onlyTrashed()
  * @method static Builder|Measure query()
- * @method static Builder|Measure whereClassName($value)
+ * @method static Builder|Measure whereConversation($value)
  * @method static Builder|Measure whereCreatedAt($value)
  * @method static Builder|Measure whereDeletedAt($value)
  * @method static Builder|Measure whereId($value)
  * @method static Builder|Measure whereMaxScore($value)
  * @method static Builder|Measure whereMinScore($value)
  * @method static Builder|Measure whereUpdatedAt($value)
- * @method static \Illuminate\Database\Query\Builder|Measure withTrashed()
- * @method static \Illuminate\Database\Query\Builder|Measure withoutTrashed()
  * @mixin \Eloquent
  */
 class Measure extends Model implements ICanDo
 {
-    use HasFactory;
-    use SoftDeletes;
     use CanDo;
 
     protected $guarded = [];

@@ -25,7 +25,7 @@ class ExerciseFactory extends Factory
             'name' => $this->faker->words(rand(3, 6), true),
             'description' => $this->faker->paragraph(rand(3, 5)),
             'url' => $this->faker->url,
-            'duration' => date('H:i:s', $this->faker->numberBetween(240, 600)),
+            'duration' => $this->faker->numberBetween(240, 600),
         ];
     }
 }
