@@ -117,16 +117,8 @@ class Program extends Model implements ICanDo, IKeywords
         );
     }
 
-    public function programs(): HasManyThrough
+    public function programs(): BelongsToMany
     {
-        return $this->hasManyThrough(
-            Program::class,
-            ProgramActivity::class,
-            'program_id',
-            'activity_id',
-            'id',
-            'id'
-        );
+        return $this->activity->programs();
     }
-
 }

@@ -9,18 +9,13 @@ use App\Models\Journal;
 use App\Models\Keyword;
 use App\Models\Lesson;
 use App\Models\Measure;
-use App\Models\Pivots\ProgramActivity;
 use App\Models\Program;
 use App\Models\Sequence;
 use App\Models\User;
-use Database\Factories\ExerciseFactory;
-use Database\Factories\JournalFactory;
-use Database\Factories\LessonFactory;
-use Database\Factories\MeasureFactory;
-use Database\Factories\ProgramFactory;
 use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Seeder;
+use Log;
 
 class InitDataSeeder extends Seeder
 {
@@ -30,6 +25,9 @@ class InitDataSeeder extends Seeder
     /** @var array */
     private $makeThings;
 
+    /**
+     *
+     */
     public function __construct()
     {
         $this->makeThings = [
@@ -40,22 +38,22 @@ class InitDataSeeder extends Seeder
                 'count' => 4,
                 'related' => [
                     Keyword::class => [
-                        'count' => rand(1, 3), ],
+                        'count' => rand(3, 7), ],
                 ],
             ],
             Journal::class => [
-                'count' => 1,
+                'count' => 3,
             ],
             Lesson::class => [
                 'count' => 10,
                 'related' => [
                     Keyword::class => [
-                        'count' => rand(1, 3),
+                        'count' => rand(3, 7),
                     ],
                 ],
             ],
             Measure::class => [
-                'count' => 1,
+                'count' => 2,
             ],
             Program::class => [
                 'count' => 2,
@@ -78,28 +76,37 @@ class InitDataSeeder extends Seeder
      */
     public function run()
     {
+        $count = 0;
         foreach($this->makeThings as $thing => $details) {
+            Log::info("making $thing" . ++$count);
             for($made = 0; $made < $details['count']; ++$made) {
-                $this->makeThing($thing, $details['related'] ?? []);
+                $this->makeThing($thing, $details['related'] ?? []); ;
             }
 
         }
-
     }
 
-    private function makeThing($thing, $related)
+
+    /**
+     * makeThing
+     *
+     * @param  mixed $thing
+     * @param  mixed $related
+     * @return void
+     */
+    private function makeThing($thing, $related): void
     {
-        $it = $this->getThing($thing);
+        $it = call_user_func([$thing, 'factory'])->make();
         $it->save();
 
         if ($it instanceof IKeywords && isset($related[Keyword::class])) {
-            $needed = $related[Keyword::class]['count'] || 0;
+            $needed = $related[Keyword::class]['count'];
             if ($needed > 0) {
                 $pool = array_filter(array_unique(explode(' ', $it->name . ' ' . $it->description)));
                 // use up any keywords that may already exist
                 $existing = array_values(array_intersect($pool, array_keys($this->keywords))) ?? [];
+                $use = [];
                 for ($made = 0; $made < $needed; ++$made) {
-                    $activity = $it->activity()->get()->first();
 
                     if (count($existing)) {
                         $existing = array_values($existing);
@@ -118,28 +125,33 @@ class InitDataSeeder extends Seeder
                     } else {
                         throw(new Exception('No more word to use!'));
                     }
-                    $activity->keywords()->attach($this->keywords[$keyword]);
+                    $it->keywords()->attach($this->keywords[$keyword]->id);
                 }
             }
         }
 
         if (get_class($it) === Program::class) {
             $needed = $related[Activity::class]['count'] ?? 0;
-            $position = 1;
+            $position = 0;
             $poolSize = Activity::all()->count();
             while ($position <= $needed) {
                 $id = rand(1, $poolSize);
-                $sequence = Sequence::create([
+                Sequence::create([
                     'activity_id' => $id,
                     'program_id' => $it->id,
-                    'sequence' => $position,
+                    'sequence' => ++$position,
                 ]);
-                //$sequence->save();
-                ++$position;
             }
         }
     }
 
+    /**
+     * getThing
+     *
+     * @param  mixed $thing
+     *
+     * @return Model
+     *
     private function getThing(string $thing): Model
     {
         switch ($thing) {
@@ -157,4 +169,5 @@ class InitDataSeeder extends Seeder
                 return User::factory()->make();
         }
     }
+    */
 }

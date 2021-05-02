@@ -20,7 +20,7 @@ services:
         depends_on:
             - mysql
             - redis
-            - selenium
+#            - selenium
     mysql:
         image: 'mysql:8.0'
         ports:
@@ -47,12 +47,12 @@ services:
             - sail
         healthcheck:
           test: ["CMD", "redis-cli", "ping"]
-    selenium:
-       image: 'selenium/standalone-chrome'
-       volumes:
-            - '/dev/shm:/dev/shm'
-       networks:
-           - sail
+#    selenium:
+#       image: 'selenium/standalone-chrome'
+#       volumes:
+#            - '/dev/shm:/dev/shm'
+#       networks:
+#           - sail
     mailhog:
         image: 'mailhog/mailhog:latest'
         ports:

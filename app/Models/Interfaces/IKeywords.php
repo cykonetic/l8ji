@@ -2,9 +2,9 @@
 
 namespace App\Models\Interfaces;
 
-use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 interface IKeywords
 {
-    public function keywords(): HasManyThrough;
+    public function keywords(): BelongsToMany;
 }
