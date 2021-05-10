@@ -9,8 +9,8 @@ use App\Models\Lesson;
 use App\Models\Measure;
 use App\Models\Program;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\MorphPivot;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 /**
  * App\Models\Pivots\ProgramActivity
@@ -63,63 +63,52 @@ class ProgramActivity extends MorphPivot
         return $this->belongsTo(Program::class);
     }
 
-    public function exercises(): ?HasManyThrough
+    public function exercises(): ?MorphToMany
     {
-        return $this->hasManyThrough(
+        return $this->morphToyMany(
             Exercise::class,
-            Activity::class,
-            'id',
-            'id',
-            'activity_id',
-            'doable_id'
-        )->where('doable_type', Exercise::class);
+            'doable',
+            'activities'
+        );
     }
 
-    public function journals(): ?HasManyThrough
+    public function journals(): ?MorphToMany
     {
-        return $this->hasManyThrough(
+        return $this->morphToMany(
             Journal::class,
-            Activity::class,
-            'id',
-            'id',
-            'activity_id',
-            'doable_id'
-        )->where('doable_type', Journal::class);
+            'doable',
+            'activities'
+        );
     }
 
-    public function lessons(): ?HasManyThrough
+    public function lessons(): ?MorphToMany
     {
-        return $this->hasManyThrough(
+        return $this->morphToMany(
             Lesson::class,
-            Activity::class,
-            'id',
-            'id',
-            'activity_id',
-            'doable_id'
-        )->where('doable_type', Lesson::class);
+            'doable',
+            'activities'
+        );
     }
 
-    public function measures(): ?HasManyThrough
+    public function measures(): ?MorphToMany
     {
-        return $this->hasManyThrough(
+        return $this->morphToMany(
             Measure::class,
-            Activity::class,
-            'id',
-            'id',
+            'doable',
+            'activities',
+            'doable_id',
             'activity_id',
-            'doable_id'
-        )->where('doable_type', Measure::class);
+            'program_id',
+            'activity_id'
+        );
     }
 
-    public function programs(): ?HasManyThrough
+    public function programs(): ?MorphToMany
     {
-        return $this->hasManyThrough(
+        return $this->morphToMany(
             Program::class,
-            Activity::class,
-            'id',
-            'id',
-            'activity_id',
-            'doable_id'
-        )->where('doable_type', Program::class);
+            'doable',
+            'activities'
+        );
     }
 }

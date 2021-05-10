@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
@@ -49,5 +50,70 @@ class Sequence extends Model
     public function program(): HasOne
     {
         return $this->hasOne(Program::class);
+    }
+
+    public function exercises(): ?MorphToMany
+    {
+        return $this->morphToMany(
+            Exercise::class,
+            'doable',
+            'activities',
+            'id',
+            'doable_id',
+            'activity_id',
+            'id'
+        );
+    }
+
+    public function journals(): ?MorphToMany
+    {
+        return $this->morphToMany(
+            Journal::class,
+            'doable',
+            'activities',
+            'id',
+            'doable_id',
+            'activity_id',
+            'id'
+        );
+    }
+
+    public function lessons(): ?MorphToMany
+    {
+        return $this->morphToMany(
+            Lesson::class,
+            'doable',
+            'activities',
+            'id',
+            'doable_id',
+            'activity_id',
+            'id'
+        );
+    }
+
+    public function measures(): ?MorphToMany
+    {
+        return $this->morphToMany(
+            Measure::class,
+            'doable',
+            'activities',
+            'id',
+            'doable_id',
+            'activity_id',
+            'id'
+        );
+    }
+
+    public function programs(): ?MorphToMany
+    {
+        return $this->morphToMany(
+            Program::class,
+            'doable',
+            'activities',
+            'id',
+            'doable_id',
+            'activity_id',
+            'id'
+        );
     }
 }
