@@ -21,7 +21,7 @@ class CreateActivitiesTable extends Migration
             $table->timestamps();
             $table->softDeletes();
 
-            $table->unique(['doable_id', 'doable_type', ], 'doable');
+            $table->unique(['doable_id', 'doable_type'], 'doable');
         });
     }
 

@@ -2,10 +2,14 @@
 
 namespace App\Models;
 
-use App\Models\Interfaces\ICanDo;
-use App\Models\Traits\CanDo;
+use App\Models\Interfaces\IProgramable;
+use App\Models\Pivots\Activity;
+use App\Models\Traits\Programable;
+use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 
 /**
  * App\Models\Measure
@@ -14,11 +18,11 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $conversation
  * @property float $min_score
  * @property float $max_score
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property \Illuminate\Support\Carbon|null $deleted_at
- * @property-read \App\Models\Activity|null $activity
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Program[] $programs
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property Carbon|null $deleted_at
+ * @property-read Activity|null $activity
+ * @property-read Collection|\App\Models\Program[] $programs
  * @property-read int|null $programs_count
  * @method static Builder|Measure newModelQuery()
  * @method static Builder|Measure newQuery()
@@ -30,11 +34,11 @@ use Illuminate\Database\Eloquent\Model;
  * @method static Builder|Measure whereMaxScore($value)
  * @method static Builder|Measure whereMinScore($value)
  * @method static Builder|Measure whereUpdatedAt($value)
- * @mixin \Eloquent
+ * @mixin Eloquent
  */
-class Measure extends Model implements ICanDo
+class Measure extends Model implements IProgramable
 {
-    use CanDo;
+    use Programable;
 
     protected $guarded = [];
 }

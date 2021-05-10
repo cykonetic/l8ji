@@ -4,7 +4,6 @@ namespace App\Models\Pivots;
 
 use App\Models\Exercise;
 use App\Models\Journal;
-use App\Models\Keyword;
 use App\Models\Lesson;
 use App\Models\Measure;
 use App\Models\Program;
@@ -17,43 +16,54 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Support\Carbon;
 
 /**
- * App\Models\Pivots\ActivityKeyword
+ * App\Models\Pivots\ActivityProgram
  *
+ * @property int $id
+ * @property int $program_id
  * @property int $activity_id
- * @property int $keyword_id
+ * @property int|null $sequence
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
+ * @property string|null $deleted_at
  * @property-read \App\Models\Pivots\Activity $activity
  * @property-read Collection|Exercise[] $exercises
  * @property-read int|null $exercises_count
  * @property-read Collection|Journal[] $journals
  * @property-read int|null $journals_count
- * @property-read Keyword $keyword
  * @property-read Collection|Lesson[] $lessons
  * @property-read int|null $lessons_count
  * @property-read Collection|Measure[] $measures
  * @property-read int|null $measures_count
+ * @property-read Program $program
  * @property-read Collection|Program[] $programs
  * @property-read int|null $programs_count
- * @method static Builder|ActivityKeyword newModelQuery()
- * @method static Builder|ActivityKeyword newQuery()
- * @method static Builder|ActivityKeyword query()
- * @method static Builder|ActivityKeyword whereActivityId($value)
- * @method static Builder|ActivityKeyword whereCreatedAt($value)
- * @method static Builder|ActivityKeyword whereKeywordId($value)
- * @method static Builder|ActivityKeyword whereUpdatedAt($value)
+ * @method static Builder|ActivityProgram newModelQuery()
+ * @method static Builder|ActivityProgram newQuery()
+ * @method static Builder|ActivityProgram query()
+ * @method static Builder|ActivityProgram whereActivityId($value)
+ * @method static Builder|ActivityProgram whereCreatedAt($value)
+ * @method static Builder|ActivityProgram whereDeletedAt($value)
+ * @method static Builder|ActivityProgram whereId($value)
+ * @method static Builder|ActivityProgram whereProgramId($value)
+ * @method static Builder|ActivityProgram whereSequence($value)
+ * @method static Builder|ActivityProgram whereUpdatedAt($value)
  * @mixin Eloquent
  */
-class ActivityKeyword extends MorphPivot
+class ActivityProgram extends MorphPivot
 {
+    protected $table = 'activity_program';
+
+    public $timestamps = true;
+    public $incrementing = true;
+
     public function activity(): BelongsTo
     {
         return $this->belongsTo(Activity::class);
     }
 
-    public function keyword(): BelongsTo
+    public function program(): BelongsTo
     {
-        return $this->belongsTo(Keyword::class);
+        return $this->belongsTo(Program::class);
     }
 
     public function exercises(): ?MorphToMany

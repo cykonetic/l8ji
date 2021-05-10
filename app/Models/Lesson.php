@@ -2,12 +2,16 @@
 
 namespace App\Models;
 
-use App\Models\Interfaces\ICanDo;
-use App\Models\Interfaces\IKeywords;
-use App\Models\Traits\CanDo;
-use App\Models\Traits\Keywords;
+use App\Models\Interfaces\IKeywordable;
+use App\Models\Interfaces\IProgramable;
+use App\Models\Pivots\Activity;
+use App\Models\Traits\Keywordable;
+use App\Models\Traits\Programable;
+use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 
 /**
  * App\Models\Lesson
@@ -17,13 +21,13 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $description
  * @property string $url
  * @property int $duration
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property \Illuminate\Support\Carbon|null $deleted_at
- * @property-read \App\Models\Activity|null $activity
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Keyword[] $keywords
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property Carbon|null $deleted_at
+ * @property-read Activity|null $activity
+ * @property-read Collection|\App\Models\Keyword[] $keywords
  * @property-read int|null $keywords_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Program[] $programs
+ * @property-read Collection|\App\Models\Program[] $programs
  * @property-read int|null $programs_count
  * @method static Builder|Lesson newModelQuery()
  * @method static Builder|Lesson newQuery()
@@ -36,12 +40,12 @@ use Illuminate\Database\Eloquent\Model;
  * @method static Builder|Lesson whereName($value)
  * @method static Builder|Lesson whereUpdatedAt($value)
  * @method static Builder|Lesson whereUrl($value)
- * @mixin \Eloquent
+ * @mixin Eloquent
  */
-class Lesson extends Model implements ICanDo, IKeywords
+class Lesson extends Model implements IProgramable, IKeywordable
 {
-    use CanDo;
-    use Keywords;
+    use Programable;
+    use Keywordable;
 
     protected $guarded = [];
 }

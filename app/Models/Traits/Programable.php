@@ -2,19 +2,20 @@
 
 namespace App\Models\Traits;
 
-use App\Models\Activity;
+use App\Models\Pivots\Activity;
+use App\Models\Program;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-trait CanDo
+trait Programable
 {
     use HasFactory;
     use SoftDeletes;
 
-    public static function bootCanDo()
+    public static function bootProgramable()
     {
         static::created(function (Model $doable) {
             $activity = Activity::updateOrCreate([
@@ -32,6 +33,8 @@ trait CanDo
 
     public function programs(): BelongsToMany
     {
-        return $this->activity->programs();
+        return $this->belongsToMany(Program::class)
+            ->using(Activity::class)
+            ->withTimestamps();
     }
 }

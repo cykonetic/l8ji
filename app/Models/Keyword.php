@@ -2,40 +2,46 @@
 
 namespace App\Models;
 
+use App\Models\Pivots\Activity;
 use App\Models\Pivots\ActivityKeyword;
+use Eloquent;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Query\Builder as WithBuilder;
+use Illuminate\Support\Carbon;
 
 /**
  * App\Models\Keyword
  *
  * @property int $id
  * @property string $keyword
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property \Illuminate\Support\Carbon|null $deleted_at
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Activity[] $activities
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property Carbon|null $deleted_at
+ * @property-read Collection|Activity[] $activities
  * @property-read int|null $activities_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Exercise[] $exercises
+ * @property-read Collection|\App\Models\Exercise[] $exercises
  * @property-read int|null $exercises_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Lesson[] $lessons
+ * @property-read Collection|\App\Models\Lesson[] $lessons
  * @property-read int|null $lessons_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Program[] $programs
+ * @property-read Collection|\App\Models\Program[] $programs
  * @property-read int|null $programs_count
- * @method static \Illuminate\Database\Eloquent\Builder|Keyword newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Keyword newQuery()
- * @method static \Illuminate\Database\Query\Builder|Keyword onlyTrashed()
- * @method static \Illuminate\Database\Eloquent\Builder|Keyword query()
- * @method static \Illuminate\Database\Eloquent\Builder|Keyword whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Keyword whereDeletedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Keyword whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Keyword whereKeyword($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Keyword whereUpdatedAt($value)
- * @method static \Illuminate\Database\Query\Builder|Keyword withTrashed()
- * @method static \Illuminate\Database\Query\Builder|Keyword withoutTrashed()
- * @mixin \Eloquent
+ * @method static Builder|Keyword newModelQuery()
+ * @method static Builder|Keyword newQuery()
+ * @method static WithBuilder|Keyword onlyTrashed()
+ * @method static Builder|Keyword query()
+ * @method static Builder|Keyword whereCreatedAt($value)
+ * @method static Builder|Keyword whereDeletedAt($value)
+ * @method static Builder|Keyword whereId($value)
+ * @method static Builder|Keyword whereKeyword($value)
+ * @method static Builder|Keyword whereUpdatedAt($value)
+ * @method static WithBuilder|Keyword withTrashed()
+ * @method static WithBuilder|Keyword withoutTrashed()
+ * @mixin Eloquent
  */
 class Keyword extends Model
 {

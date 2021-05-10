@@ -2,10 +2,14 @@
 
 namespace App\Models;
 
-use App\Models\Interfaces\ICanDo;
-use App\Models\Traits\CanDo;
+use App\Models\Interfaces\IProgramable;
+use App\Models\Pivots\Activity;
+use App\Models\Traits\Programable;
+use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 
 /**
  * App\Models\Journal
@@ -14,11 +18,11 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $name
  * @property string $description
  * @property string $url
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property \Illuminate\Support\Carbon|null $deleted_at
- * @property-read \App\Models\Activity|null $activity
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Program[] $programs
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property Carbon|null $deleted_at
+ * @property-read Activity|null $activity
+ * @property-read Collection|\App\Models\Program[] $programs
  * @property-read int|null $programs_count
  * @method static Builder|Journal newModelQuery()
  * @method static Builder|Journal newQuery()
@@ -30,11 +34,11 @@ use Illuminate\Database\Eloquent\Model;
  * @method static Builder|Journal whereName($value)
  * @method static Builder|Journal whereUpdatedAt($value)
  * @method static Builder|Journal whereUrl($value)
- * @mixin \Eloquent
+ * @mixin Eloquent
  */
-class Journal extends Model implements ICanDo
+class Journal extends Model implements IProgramable
 {
-    use CanDo;
+    use Programable;
 
     protected $guarded = [];
 }

@@ -2,16 +2,20 @@
 
 namespace App\Models;
 
-use App\Models\Interfaces\ICanDo;
-use App\Models\Interfaces\IKeywords;
-use App\Models\Pivots\ProgramActivity;
-use App\Models\Traits\CanDo;
-use App\Models\Traits\Keywords;
+use App\Models\Interfaces\IKeywordable;
+use App\Models\Interfaces\IProgramable;
+use App\Models\Pivots\Activity;
+use App\Models\Pivots\ActivityProgram;
+use App\Models\Traits\Keywordable;
+use App\Models\Traits\Programable;
+use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
+use Illuminate\Support\Carbon;
 
 /**
  * App\Models\Program
@@ -19,25 +23,25 @@ use Illuminate\Database\Eloquent\Relations\HasManyThrough;
  * @property int $id
  * @property string $name
  * @property string $description
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property \Illuminate\Support\Carbon|null $deleted_at
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Activity[] $activities
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property Carbon|null $deleted_at
+ * @property-read Collection|Activity[] $activities
  * @property-read int|null $activities_count
- * @property-read \App\Models\Activity|null $activity
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Exercise[] $exercises
+ * @property-read Activity|null $activity
+ * @property-read Collection|\App\Models\Exercise[] $exercises
  * @property-read int|null $exercises_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Journal[] $journals
+ * @property-read Collection|\App\Models\Journal[] $journals
  * @property-read int|null $journals_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Keyword[] $keywords
+ * @property-read Collection|\App\Models\Keyword[] $keywords
  * @property-read int|null $keywords_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Lesson[] $lessons
+ * @property-read Collection|\App\Models\Lesson[] $lessons
  * @property-read int|null $lessons_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Measure[] $measures
+ * @property-read Collection|\App\Models\Measure[] $measures
  * @property-read int|null $measures_count
- * @property-read \Illuminate\Database\Eloquent\Collection|Program[] $programs
+ * @property-read Collection|Program[] $programs
  * @property-read int|null $programs_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Sequence[] $sequences
+ * @property-read Collection|\App\Models\Sequence[] $sequences
  * @property-read int|null $sequences_count
  * @method static Builder|Program newModelQuery()
  * @method static Builder|Program newQuery()
@@ -48,12 +52,12 @@ use Illuminate\Database\Eloquent\Relations\HasManyThrough;
  * @method static Builder|Program whereId($value)
  * @method static Builder|Program whereName($value)
  * @method static Builder|Program whereUpdatedAt($value)
- * @mixin \Eloquent
+ * @mixin Eloquent
  */
-class Program extends Model implements ICanDo, IKeywords
+class Program extends Model implements IProgramable, IKeywordable
 {
-    use CanDo;
-    use Keywords;
+    use Programable;
+    use Keywordable;
 
     protected $guarded = [];
 
@@ -64,61 +68,57 @@ class Program extends Model implements ICanDo, IKeywords
 
     public function activities(): BelongsToMany
     {
-        return $this->belongsToMany(Activity::class, 'program_activity')
-            ->using(ProgramActivity::class)
+        return $this->belongsToMany(Activity::class)
+            ->using(ActivityProgram::class)
             ->withTimestamps();
     }
 
-    public function exercises(): HasManyThrough
+
+    public function exercises(): ?MorphToMany
     {
-        return $this->hasManyThrough(
+        return $this->morphedByMany(
             Exercise::class,
-            ProgramActivity::class,
-            'program_id',
-            'activity_id',
+            'doable',
+            'activities',
             'id',
-            'id'
+            null,
+            'activity_id'
         );
     }
 
-    public function journals(): HasManyThrough
+    public function journals(): ?MorphToMany
     {
-        return $this->hasManyThrough(
+        return $this->morphedByMany(
             Journal::class,
-            ProgramActivity::class,
-            'program_id',
-            'activity_id',
+            'doable',
+            'activities',
             'id',
-            'id'
+            null,
+            'activity_id'
         );
     }
 
-    public function lessons(): HasManyThrough
+    public function lessons(): ?MorphToMany
     {
-        return $this->hasManyThrough(
+        return $this->morphToMany(
             Lesson::class,
-            ProgramActivity::class,
-            'program_id',
-            'activity_id',
+            'doable',
+            'activities',
             'id',
-            'id'
+            null,
+            'activity_id'
         );
     }
 
-    public function measures(): HasManyThrough
+    public function measures(): ?MorphToMany
     {
-        return $this->hasManyThrough(
+        return $this->morphedByMany(
             Measure::class,
-            ProgramActivity::class,
-            'program_id',
-            'activity_id',
+            'doable',
+            'activities',
             'id',
-            'id'
+            null,
+            'activity_id'
         );
-    }
-
-    public function programs(): BelongsToMany
-    {
-        return $this->activity->programs();
     }
 }

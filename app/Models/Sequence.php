@@ -2,38 +2,39 @@
 
 namespace App\Models;
 
+use App\Models\Pivots\Activity;
+use Eloquent;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Query\Builder as WithBuilder;
 
 /**
  * App\Models\Sequence
  *
- * @property int $id
- * @property int $program_id
- * @property int $activity_id
- * @property int|null $sequence
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property \Illuminate\Support\Carbon|null $deleted_at
- * @property-read \App\Models\Activity|null $activity
+ * @property-read Activity|null $activity
+ * @property-read Collection|\App\Models\Exercise[] $exercises
+ * @property-read int|null $exercises_count
+ * @property-read Collection|\App\Models\Journal[] $journals
+ * @property-read int|null $journals_count
+ * @property-read Collection|\App\Models\Lesson[] $lessons
+ * @property-read int|null $lessons_count
+ * @property-read Collection|\App\Models\Measure[] $measures
+ * @property-read int|null $measures_count
  * @property-read \App\Models\Program|null $program
- * @method static \Illuminate\Database\Eloquent\Builder|Sequence newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Sequence newQuery()
- * @method static \Illuminate\Database\Query\Builder|Sequence onlyTrashed()
- * @method static \Illuminate\Database\Eloquent\Builder|Sequence query()
- * @method static \Illuminate\Database\Eloquent\Builder|Sequence whereActivityId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Sequence whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Sequence whereDeletedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Sequence whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Sequence whereProgramId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Sequence whereSequence($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Sequence whereUpdatedAt($value)
- * @method static \Illuminate\Database\Query\Builder|Sequence withTrashed()
- * @method static \Illuminate\Database\Query\Builder|Sequence withoutTrashed()
- * @mixin \Eloquent
+ * @property-read Collection|\App\Models\Program[] $programs
+ * @property-read int|null $programs_count
+ * @method static Builder|Sequence newModelQuery()
+ * @method static Builder|Sequence newQuery()
+ * @method static WithBuilder|Sequence onlyTrashed()
+ * @method static Builder|Sequence query()
+ * @method static WithBuilder|Sequence withTrashed()
+ * @method static WithBuilder|Sequence withoutTrashed()
+ * @mixin Eloquent
  */
 class Sequence extends Model
 {
@@ -54,27 +55,25 @@ class Sequence extends Model
 
     public function exercises(): ?MorphToMany
     {
-        return $this->morphToMany(
+        return $this->morphedByMany(
             Exercise::class,
             'doable',
             'activities',
             'id',
-            'doable_id',
-            'activity_id',
-            'id'
+            null,
+            'activity_id'
         );
     }
 
     public function journals(): ?MorphToMany
     {
-        return $this->morphToMany(
+        return $this->morphedByMany(
             Journal::class,
             'doable',
             'activities',
             'id',
-            'doable_id',
-            'activity_id',
-            'id'
+            null,
+            'activity_id'
         );
     }
 
@@ -85,35 +84,32 @@ class Sequence extends Model
             'doable',
             'activities',
             'id',
-            'doable_id',
-            'activity_id',
-            'id'
+            null,
+            'activity_id'
         );
     }
 
     public function measures(): ?MorphToMany
     {
-        return $this->morphToMany(
+        return $this->morphedByMany(
             Measure::class,
             'doable',
             'activities',
             'id',
-            'doable_id',
-            'activity_id',
-            'id'
+            null,
+            'activity_id'
         );
     }
 
     public function programs(): ?MorphToMany
     {
-        return $this->morphToMany(
+        return $this->morphedByMany(
             Program::class,
             'doable',
             'activities',
             'id',
-            'doable_id',
-            'activity_id',
-            'id'
+            null,
+            'activity_id'
         );
     }
 }

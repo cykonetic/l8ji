@@ -4,7 +4,7 @@ namespace App\Models\Interfaces;
 
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-interface IKeywords
+interface IKeywordable
 {
     public function keywords(): BelongsToMany;
 }
