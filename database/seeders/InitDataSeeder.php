@@ -2,9 +2,9 @@
 
 namespace Database\Seeders;
 
-use App\Models\Activity;
+use App\Models\Pivots\Activity;
 use App\Models\Exercise;
-use App\Models\Interfaces\IKeywords;
+use App\Models\Interfaces\IKeywordable;
 use App\Models\Journal;
 use App\Models\Keyword;
 use App\Models\Lesson;
@@ -13,7 +13,6 @@ use App\Models\Program;
 use App\Models\Sequence;
 use App\Models\User;
 use Exception;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Seeder;
 use Log;
 
@@ -73,6 +72,7 @@ class InitDataSeeder extends Seeder
      * Run the database seeds.
      *
      * @return void
+     * @throws Exception
      */
     public function run()
     {
@@ -80,7 +80,7 @@ class InitDataSeeder extends Seeder
         foreach($this->makeThings as $thing => $details) {
             Log::info("making $thing" . ++$count);
             for($made = 0; $made < $details['count']; ++$made) {
-                $this->makeThing($thing, $details['related'] ?? []); ;
+                $this->makeThing($thing, $details['related'] ?? []);
             }
 
         }
@@ -90,22 +90,22 @@ class InitDataSeeder extends Seeder
     /**
      * makeThing
      *
-     * @param  mixed $thing
-     * @param  mixed $related
+     * @param mixed $thing
+     * @param mixed $related
      * @return void
+     * @throws Exception
      */
     private function makeThing($thing, $related): void
     {
         $it = call_user_func([$thing, 'factory'])->make();
         $it->save();
 
-        if ($it instanceof IKeywords && isset($related[Keyword::class])) {
+        if ($it instanceof IKeywordable && isset($related[Keyword::class])) {
             $needed = $related[Keyword::class]['count'];
             if ($needed > 0) {
                 $pool = array_filter(array_unique(explode(' ', $it->name . ' ' . $it->description)));
                 // use up any keywords that may already exist
                 $existing = array_values(array_intersect($pool, array_keys($this->keywords))) ?? [];
-                $use = [];
                 for ($made = 0; $made < $needed; ++$made) {
 
                     if (count($existing)) {
@@ -144,30 +144,4 @@ class InitDataSeeder extends Seeder
             }
         }
     }
-
-    /**
-     * getThing
-     *
-     * @param  mixed $thing
-     *
-     * @return Model
-     *
-    private function getThing(string $thing): Model
-    {
-        switch ($thing) {
-            case Exercise::class:
-                return Exercise::factory()->make();
-            case Journal::class:
-                return Journal::factory()->make();
-            case Lesson::class:
-                return Lesson::factory()->make();
-            case Measure::class:
-                return Measure::factory()->make();
-            case Program::class:
-                return Program::factory()->make();
-            case User::class:
-                return User::factory()->make();
-        }
-    }
-    */
 }
