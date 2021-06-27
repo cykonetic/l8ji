@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateProgramActivityTable extends Migration
+class CreateActivityKeywordTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,17 +13,12 @@ class CreateProgramActivityTable extends Migration
      */
     public function up()
     {
-        Schema::create('program_activity', function (Blueprint $table) {
-            $table->id();
-
-            $table->unsignedBigInteger('program_id');
+        Schema::create('activity_keyword', function (Blueprint $table) {
             $table->unsignedBigInteger('activity_id');
-            $table->unsignedSmallInteger('sequence')->nullable();
-
+            $table->unsignedBigInteger('keyword_id')->index('keyworded');
             $table->timestamps();
-            $table->softDeletes();
 
-            $table->index(['program_id', 'activity_id', 'sequence'], 'sequenceable');
+            $table->unique(['activity_id', 'keyword_id']);
         });
     }
 
@@ -34,6 +29,6 @@ class CreateProgramActivityTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('program_activity');
+        Schema::dropIfExists('activity_keyword');
     }
 }

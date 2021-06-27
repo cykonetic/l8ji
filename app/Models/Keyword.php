@@ -2,10 +2,8 @@
 
 namespace App\Models;
 
-use App\Models\Pivots\ActivityKeyword;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
@@ -18,12 +16,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Activity[] $activities
  * @property-read int|null $activities_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Exercise[] $exercises
- * @property-read int|null $exercises_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Lesson[] $lessons
- * @property-read int|null $lessons_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Program[] $programs
- * @property-read int|null $programs_count
  * @method static \Illuminate\Database\Eloquent\Builder|Keyword newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Keyword newQuery()
  * @method static \Illuminate\Database\Query\Builder|Keyword onlyTrashed()
@@ -47,42 +39,6 @@ class Keyword extends Model
 public function activities(): BelongsToMany
     {
         return $this->belongsToMany(Activity::class)
-            ->using(ActivityKeyword::class)
             ->withTimestamps();
-    }
-
-    public function exercises(): HasManyThrough
-    {
-        return $this->hasManyThrough(
-            Exercise::class,
-            ActivityKeyword::class,
-            'program_id',
-            'activity_id',
-            'id',
-            'id'
-        );
-    }
-
-    public function lessons(): HasManyThrough
-    {
-        return $this->hasManyThrough(
-            Lesson::class,
-            ActivityKeyword::class,
-            'program_id',
-            'activity_id',
-            'id',
-            'id'
-        );
-    }
-    public function programs(): HasManyThrough
-    {
-        return $this->hasManyThrough(
-            Program::class,
-            ActivityKeyword::class,
-            'program_id',
-            'activity_id',
-            'id',
-            'id'
-        );
     }
 }

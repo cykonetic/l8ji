@@ -4,15 +4,12 @@ namespace Database\Seeders;
 
 use App\Models\Activity;
 use App\Models\Exercise;
-use App\Models\Interfaces\IKeywords;
 use App\Models\Journal;
 use App\Models\Keyword;
 use App\Models\Lesson;
 use App\Models\Measure;
 use App\Models\Program;
-use App\Models\Sequence;
 use App\Models\User;
-use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Seeder;
 use Log;
@@ -38,7 +35,8 @@ class InitDataSeeder extends Seeder
                 'count' => 4,
                 'related' => [
                     Keyword::class => [
-                        'count' => rand(3, 7), ],
+                        'count' => rand(3, 7),
+                    ],
                 ],
             ],
             Journal::class => [
@@ -82,7 +80,6 @@ class InitDataSeeder extends Seeder
             for($made = 0; $made < $details['count']; ++$made) {
                 $this->makeThing($thing, $details['related'] ?? []); ;
             }
-
         }
     }
 
@@ -90,57 +87,36 @@ class InitDataSeeder extends Seeder
     /**
      * makeThing
      *
-     * @param  mixed $thing
-     * @param  mixed $related
+     * @param  string $thing
+     * @param  array $related
      * @return void
      */
-    private function makeThing($thing, $related): void
+    private function makeThing(string $thing, array $related): void
     {
-        $it = call_user_func([$thing, 'factory'])->make();
-        $it->save();
+        $itFactory = call_user_func([$thing, 'factory']);
+        $it = $itFactory->create();
 
-        if ($it instanceof IKeywords && isset($related[Keyword::class])) {
-            $needed = $related[Keyword::class]['count'];
-            if ($needed > 0) {
-                $pool = array_filter(array_unique(explode(' ', $it->name . ' ' . $it->description)));
-                // use up any keywords that may already exist
-                $existing = array_values(array_intersect($pool, array_keys($this->keywords))) ?? [];
-                $use = [];
-                for ($made = 0; $made < $needed; ++$made) {
+        foreach ($related as $class => $props) {
+            if (Keyword::class === $class) {
+                $wordPool = explode(' ', $it->description);
 
-                    if (count($existing)) {
-                        $existing = array_values($existing);
-                        $use = rand(0, count($existing) - 1);
-                        $keyword = $existing[$use];
-                        array_splice($existing, $use, 1);
-
-                    } elseif (count($pool)) {
-                        $pool = array_values($pool);
-                        $use = rand(0, count($pool) - 1);
-                        $keyword = $pool[$use];
-                        array_splice($pool, $use, 1);
-
-                        $this->keywords[$keyword] = Keyword::create(['keyword' => $keyword]);
-                        //$this->keywords[$keyword]->save();
-                    } else {
-                        throw(new Exception('No more word to use!'));
+                for ($wordsPicked = []; count($wordsPicked) < $props['count'];) {
+                    $index = rand(0, count($wordPool) - 1);
+                    $picking = preg_replace('/[^a-z]+/','',strtolower($wordPool[$index]));
+                    if (strlen($picking) > 3 && !in_array($picking, $wordsPicked)) {
+                        $wordsPicked[] = $picking;
+                        array_splice($wordPool, $index, 1);
                     }
-                    $it->keywords()->attach($this->keywords[$keyword]->id);
                 }
-            }
-        }
-
-        if (get_class($it) === Program::class) {
-            $needed = $related[Activity::class]['count'] ?? 0;
-            $position = 0;
-            $poolSize = Activity::all()->count();
-            while ($position <= $needed) {
-                $id = rand(1, $poolSize);
-                Sequence::create([
-                    'activity_id' => $id,
-                    'program_id' => $it->id,
-                    'sequence' => ++$position,
-                ]);
+                foreach($wordsPicked as $adding) {
+                    if (array_key_exists($adding, $this->keywords)) {
+                        $keyword = $this->keywords[$adding];
+                    } else {
+                        $keyword = Keyword::create(['keyword' => $adding]);
+                        $this->keywords[$adding] = $keyword;
+                    }
+                    $it->activity->keywords()->attach($keyword->id);
+                }
             }
         }
     }

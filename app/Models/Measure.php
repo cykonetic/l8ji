@@ -18,8 +18,6 @@ use Illuminate\Database\Eloquent\Model;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \App\Models\Activity|null $activity
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Program[] $programs
- * @property-read int|null $programs_count
  * @method static Builder|Measure newModelQuery()
  * @method static Builder|Measure newQuery()
  * @method static Builder|Measure query()

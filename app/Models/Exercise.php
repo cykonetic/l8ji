@@ -3,9 +3,7 @@
 namespace App\Models;
 
 use App\Models\Interfaces\ICanDo;
-use App\Models\Interfaces\IKeywords;
 use App\Models\Traits\CanDo;
-use App\Models\Traits\Keywords;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -20,10 +18,6 @@ use Illuminate\Database\Eloquent\Model;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \App\Models\Activity|null $activity
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Keyword[] $keywords
- * @property-read int|null $keywords_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Program[] $programs
- * @property-read int|null $programs_count
  * @method static \Illuminate\Database\Eloquent\Builder|Exercise newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Exercise newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Exercise query()
@@ -37,10 +31,9 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Exercise whereUrl($value)
  * @mixin \Eloquent
  */
-class Exercise extends Model implements ICanDo, IKeywords
+class Exercise extends Model implements ICanDo
 {
     use CanDo;
-    use Keywords;
 
     protected $guarded = [];
 }
