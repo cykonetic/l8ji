@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
-use App\Models\Interfaces\ICanDo;
-use App\Models\Traits\CanDo;
+use App\Models\Interfaces\IDoable;
+use App\Models\Interfaces\IProgramable;
+use App\Models\Traits\Doable;
+use App\Models\Traits\Programable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
@@ -18,6 +20,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \App\Models\Activity|null $activity
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Pivots\ProgramActivity[] $programActivities
+ * @property-read int|null $program_activities_count
  * @method static Builder|Measure newModelQuery()
  * @method static Builder|Measure newQuery()
  * @method static Builder|Measure query()
@@ -30,9 +34,10 @@ use Illuminate\Database\Eloquent\Model;
  * @method static Builder|Measure whereUpdatedAt($value)
  * @mixin \Eloquent
  */
-class Measure extends Model implements ICanDo
+class Measure extends Model implements IDoable, IProgramable
 {
-    use CanDo;
+    use Doable;
+    use Programable;
 
     protected $guarded = [];
 }

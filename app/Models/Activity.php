@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Models\Pivots\ActivityKeyword;
+use App\Models\Pivots\ProgramActivity;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
@@ -49,12 +51,14 @@ class Activity extends Model
     public function keywords(): BelongsToMany
     {
         return $this->belongsToMany(Keyword::class)
+            ->using(ActivityKeyword::class)
             ->withTimestamps();
     }
 
     public function programs(): BelongsToMany
     {
         return $this->belongsToMany(Program::class, 'program_activity')
+            ->using(ProgramActivity::class)
             ->withTimestamps();
     }
 }

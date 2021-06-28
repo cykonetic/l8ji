@@ -2,10 +2,9 @@
 
 namespace App\Models\Interfaces;
 
-use App\Models\Activity;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 
-interface ICanDo
+interface IDoable
 {
     // Require the implementing class to have an Activity morph
     public function activity(): MorphOne;

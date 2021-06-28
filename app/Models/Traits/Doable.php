@@ -8,19 +8,18 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-trait CanDo
+trait Doable
 {
     use HasFactory;
     use SoftDeletes;
 
-    public static function bootCanDo()
+    public static function bootDoable()
     {
         static::created(function (Model $doable) {
-            $activity = Activity::updateOrCreate([
+            Activity::updateOrCreate([
                 'doable_type' => get_class($doable),
                 'doable_id' => $doable->id,
             ]);
-            $activity->save();
         });
     }
 

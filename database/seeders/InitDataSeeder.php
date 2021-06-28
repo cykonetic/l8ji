@@ -95,7 +95,6 @@ class InitDataSeeder extends Seeder
     {
         $itFactory = call_user_func([$thing, 'factory']);
         $it = $itFactory->create();
-
         foreach ($related as $class => $props) {
             if (Keyword::class === $class) {
                 $wordPool = explode(' ', $it->description);
@@ -108,6 +107,7 @@ class InitDataSeeder extends Seeder
                         array_splice($wordPool, $index, 1);
                     }
                 }
+
                 foreach($wordsPicked as $adding) {
                     if (array_key_exists($adding, $this->keywords)) {
                         $keyword = $this->keywords[$adding];
@@ -120,30 +120,4 @@ class InitDataSeeder extends Seeder
             }
         }
     }
-
-    /**
-     * getThing
-     *
-     * @param  mixed $thing
-     *
-     * @return Model
-     *
-    private function getThing(string $thing): Model
-    {
-        switch ($thing) {
-            case Exercise::class:
-                return Exercise::factory()->make();
-            case Journal::class:
-                return Journal::factory()->make();
-            case Lesson::class:
-                return Lesson::factory()->make();
-            case Measure::class:
-                return Measure::factory()->make();
-            case Program::class:
-                return Program::factory()->make();
-            case User::class:
-                return User::factory()->make();
-        }
-    }
-    */
 }
