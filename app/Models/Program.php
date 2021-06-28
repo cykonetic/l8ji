@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Interfaces\IDoable;
 use App\Models\Interfaces\IKeywordable;
 use App\Models\Interfaces\IProgramable;
+use App\Models\Pivots\ProgramActivity;
 use App\Models\Traits\Doable;
 use App\Models\Traits\Keywordable;
 use App\Models\Traits\Programable;
@@ -26,7 +27,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property-read \App\Models\Activity|null $activity
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Pivots\ActivityKeyword[] $activityKeywords
  * @property-read int|null $activity_keywords_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Pivots\ProgramActivity[] $programActivities
+ * @property-read \Illuminate\Database\Eloquent\Collection|ProgramActivity[] $programActivities
  * @property-read int|null $program_activities_count
  * @method static Builder|Program newModelQuery()
  * @method static Builder|Program newQuery()
@@ -50,7 +51,8 @@ class Program extends Model implements IDoable, IKeywordable, IProgramable
     public function activities(): BelongsToMany
     {
         return $this->belongsToMany(Activity::class, 'program_activity')
-            ->withPivot('sequence')
+            ->using(ProgramActivity::class)
+            ->withPivot(['sequence'])
             ->withTimestamps();
     }
 }

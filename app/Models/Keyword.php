@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Pivots\ActivityKeyword;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -39,6 +40,7 @@ class Keyword extends Model
 public function activities(): BelongsToMany
     {
         return $this->belongsToMany(Activity::class)
+            ->using(ActivityKeyword::class)
             ->withTimestamps();
     }
 }
