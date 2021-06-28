@@ -11,7 +11,6 @@ use App\Models\Measure;
 use App\Models\Program;
 use App\Models\User;
 use Illuminate\Database\Seeder;
-use Log;
 
 class InitDataSeeder extends Seeder
 {
@@ -34,7 +33,8 @@ class InitDataSeeder extends Seeder
                 'count' => 4,
                 'related' => [
                     Keyword::class => [
-                        'count' => rand(3, 7),
+                        'min' => 3,
+                        'max' => 7,
                     ],
                 ],
             ],
@@ -45,7 +45,8 @@ class InitDataSeeder extends Seeder
                 'count' => 10,
                 'related' => [
                     Keyword::class => [
-                        'count' => rand(3, 7),
+                        'min' => 3,
+                        'max' => 7,
                     ],
                 ],
             ],
@@ -56,10 +57,12 @@ class InitDataSeeder extends Seeder
                 'count' => 2,
                 'related' => [
                     Activity::class => [
-                        'count' => rand(5, 10),
+                        'min' => 6,
+                        'max' => 10,
                     ],
                     Keyword::class => [
-                        'count' => rand(3, 7),
+                        'min' => 3,
+                        'max' => 7,
                     ],
                 ],
             ],
@@ -73,9 +76,7 @@ class InitDataSeeder extends Seeder
      */
     public function run()
     {
-        $count = 0;
         foreach($this->makeThings as $thing => $details) {
-            Log::info("making $thing" . ++$count);
             for($made = 0; $made < $details['count']; ++$made) {
                 $this->makeThing($thing, $details['related'] ?? []); ;
             }
@@ -92,13 +93,13 @@ class InitDataSeeder extends Seeder
      */
     private function makeThing(string $thing, array $related): void
     {
-        $itFactory = call_user_func([$thing, 'factory']);
-        $it = $itFactory->create();
+        $it = call_user_func([$thing, 'factory'])->create();
         foreach ($related as $class => $props) {
+            dump($class);
             if (Keyword::class === $class) {
                 $wordPool = explode(' ', $it->description);
-
-                for ($wordsPicked = []; count($wordsPicked) < $props['count'];) {
+                $count = rand($props['min'], $props['max']);
+                for ($wordsPicked = []; count($wordsPicked) < $count;) {
                     $index = rand(0, count($wordPool) - 1);
                     $picking = preg_replace('/[^a-z]+/', '', strtolower($wordPool[$index]));
                     if (strlen($picking) > 3 && !in_array($picking, $wordsPicked)) {
@@ -116,7 +117,17 @@ class InitDataSeeder extends Seeder
                     }
                     $it->activity->keywords()->attach($keyword->id);
                 }
+            } else {
+                $count = rand($props['min'], $props['max']);
+                $activities = Activity::inRandomOrder()->take($count)->pluck('id');
+
+                for ($i = 0; $i < count($activities); ++$i) {
+                    if ($activities[$i] !== $it->activity->id) {
+                        $it->activities()->attach($activities[$i], ['sequence' => $i + 1]);
+                    }
+                }
             }
+
         }
     }
 }
