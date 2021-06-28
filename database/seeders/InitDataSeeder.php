@@ -10,7 +10,6 @@ use App\Models\Lesson;
 use App\Models\Measure;
 use App\Models\Program;
 use App\Models\User;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Seeder;
 use Log;
 
@@ -101,7 +100,7 @@ class InitDataSeeder extends Seeder
 
                 for ($wordsPicked = []; count($wordsPicked) < $props['count'];) {
                     $index = rand(0, count($wordPool) - 1);
-                    $picking = preg_replace('/[^a-z]+/','',strtolower($wordPool[$index]));
+                    $picking = preg_replace('/[^a-z]+/', '', strtolower($wordPool[$index]));
                     if (strlen($picking) > 3 && !in_array($picking, $wordsPicked)) {
                         $wordsPicked[] = $picking;
                         array_splice($wordPool, $index, 1);
