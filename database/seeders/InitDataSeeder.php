@@ -27,42 +27,50 @@ class InitDataSeeder extends Seeder
     {
         $this->makeThings = [
             User::class => [
-                'count' => 5,
+                'min' => 5,
+                'max' => 5,
             ],
             Exercise::class => [
-                'count' => 4,
+                'min' => 5,
+                'max' => 9,
                 'related' => [
                     Keyword::class => [
-                        'min' => 3,
-                        'max' => 7,
+                        'min' => 5,
+                        'max' => 9,
                     ],
                 ],
             ],
             Journal::class => [
+                'min' => 3,
+                'max' => 4,
                 'count' => 3,
             ],
             Lesson::class => [
-                'count' => 10,
+                'min' => 9,
+                'max' => 13,
                 'related' => [
                     Keyword::class => [
-                        'min' => 3,
-                        'max' => 7,
+                        'min' => 5,
+                        'max' => 9,
                     ],
                 ],
             ],
             Measure::class => [
+                'min' => 2,
+                'max' => 3,
                 'count' => 2,
             ],
             Program::class => [
-                'count' => 2,
+                'min' => 2,
+                'max' => 3,
                 'related' => [
                     Activity::class => [
-                        'min' => 6,
-                        'max' => 10,
+                        'min' => 9,
+                        'max' => 13,
                     ],
                     Keyword::class => [
-                        'min' => 3,
-                        'max' => 7,
+                        'min' => 9,
+                        'max' => 13,
                     ],
                 ],
             ],
@@ -77,7 +85,8 @@ class InitDataSeeder extends Seeder
     public function run()
     {
         foreach($this->makeThings as $thing => $details) {
-            for($made = 0; $made < $details['count']; ++$made) {
+            $count = rand($details['min'], $details['max']);
+            for($made = 0; $made < $count; ++$made) {
                 $this->makeThing($thing, $details['related'] ?? []); ;
             }
         }
@@ -95,7 +104,6 @@ class InitDataSeeder extends Seeder
     {
         $it = call_user_func([$thing, 'factory'])->create();
         foreach ($related as $class => $props) {
-            dump($class);
             if (Keyword::class === $class) {
                 $wordPool = explode(' ', $it->description);
                 $count = rand($props['min'], $props['max']);
@@ -120,14 +128,12 @@ class InitDataSeeder extends Seeder
             } else {
                 $count = rand($props['min'], $props['max']);
                 $activities = Activity::inRandomOrder()->take($count)->pluck('id');
-
                 for ($i = 0; $i < count($activities); ++$i) {
                     if ($activities[$i] !== $it->activity->id) {
                         $it->activities()->attach($activities[$i], ['sequence' => $i + 1]);
                     }
                 }
             }
-
         }
     }
 }
