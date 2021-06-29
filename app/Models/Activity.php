@@ -55,7 +55,6 @@ class Activity extends Model
     public function programs(): BelongsToMany
     {
         return $this->belongsToMany(Program::class, 'program_activity', 'activity_id', 'program_id')
-            ->withPivot(['sequence'])
             ->withTimestamps();
     }
 }
