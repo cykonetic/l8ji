@@ -38,7 +38,7 @@ class Program extends Model implements IDoable
 
     public function activities(): BelongsToMany
     {
-        return $this->belongsToMany(Activity::class, 'program_activity', 'program_id', 'activity_id')
+        return $this->belongsToMany(Activity::class)
             ->withPivot(['sequence'])
             ->withTimestamps();
     }
