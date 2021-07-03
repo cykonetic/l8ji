@@ -35,8 +35,7 @@ class Keyword extends Model
 
     protected $guarded = [];
 
-
-public function activities(): BelongsToMany
+    public function activities(): BelongsToMany
     {
         return $this->belongsToMany(Activity::class)
             ->withTimestamps();

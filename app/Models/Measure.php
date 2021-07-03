@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Models\Interfaces\IDoable;
+use App\Models\Interfaces\DoableContract;
 use App\Models\Traits\Doable;
 use Illuminate\Database\Eloquent\Model;
 
@@ -29,7 +29,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Measure whereUpdatedAt($value)
  * @mixin \Eloquent
  */
-class Measure extends Model implements IDoable
+class Measure extends Model implements DoableContract
 {
     use Doable;
 

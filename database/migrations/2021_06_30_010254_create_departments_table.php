@@ -16,8 +16,7 @@ class CreateDepartmentsTable extends Migration
         Schema::create('departments', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->bigInteger('organization_id');
-            $table->boolean('is_administrative');
+            $table->unsignedBigInteger('organization_id');
             $table->timestamps();
         });
     }

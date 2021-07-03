@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Models\Interfaces\IDoable;
+use App\Models\Interfaces\DoableContract;
 use App\Models\Traits\Doable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -30,7 +30,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @method static \Illuminate\Database\Eloquent\Builder|Program whereUpdatedAt($value)
  * @mixin \Eloquent
  */
-class Program extends Model implements IDoable
+class Program extends Model implements DoableContract
 {
     use Doable;
 

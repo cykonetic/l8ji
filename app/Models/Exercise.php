@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Models\Interfaces\IDoable;
+use App\Models\Interfaces\DoableContract;
 use App\Models\Traits\Doable;
 use Illuminate\Database\Eloquent\Model;
 
@@ -31,7 +31,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Exercise whereUrl($value)
  * @mixin \Eloquent
  */
-class Exercise extends Model implements IDoable
+class Exercise extends Model implements DoableContract
 {
     use Doable;
 
