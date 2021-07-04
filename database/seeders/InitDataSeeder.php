@@ -39,7 +39,6 @@ class InitDataSeeder extends Seeder
             Journal::class => [
                 'min' => 3,
                 'max' => 4,
-                'count' => 3,
             ],
             Lesson::class => [
                 'min' => 9,
@@ -54,7 +53,6 @@ class InitDataSeeder extends Seeder
             Measure::class => [
                 'min' => 2,
                 'max' => 3,
-                'count' => 2,
             ],
             Program::class => [
                 'min' => 2,
@@ -88,7 +86,6 @@ class InitDataSeeder extends Seeder
         }
     }
 
-
     /**
      * makeThing
      *
@@ -102,7 +99,7 @@ class InitDataSeeder extends Seeder
         foreach ($related as $class => $props) {
             if (Keyword::class === $class) {
                 $wordPool = explode(' ', $it->description);
-                $count = rand($props['min'], $props['max']);
+                $count = min(rand($props['min'], $props['max']), count($wordPool));
                 for ($wordsPicked = []; count($wordsPicked) < $count;) {
                     $index = rand(0, count($wordPool) - 1);
                     $picking = preg_replace('/[^a-z]+/', '', strtolower($wordPool[$index]));
