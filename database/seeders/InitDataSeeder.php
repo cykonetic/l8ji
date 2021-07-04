@@ -26,10 +26,6 @@ class InitDataSeeder extends Seeder
     public function __construct()
     {
         $this->makeThings = [
-            User::class => [
-                'min' => 5,
-                'max' => 5,
-            ],
             Exercise::class => [
                 'min' => 5,
                 'max' => 9,
@@ -84,10 +80,10 @@ class InitDataSeeder extends Seeder
      */
     public function run()
     {
-        foreach($this->makeThings as $thing => $details) {
+        foreach ($this->makeThings as $thing => $details) {
             $count = rand($details['min'], $details['max']);
-            for($made = 0; $made < $count; ++$made) {
-                $this->makeThing($thing, $details['related'] ?? []); ;
+            for ($made = 0; $made < $count; ++$made) {
+                $this->makeThing($thing, $details['related'] ?? []);
             }
         }
     }
@@ -116,7 +112,7 @@ class InitDataSeeder extends Seeder
                     }
                 }
 
-                foreach($wordsPicked as $adding) {
+                foreach ($wordsPicked as $adding) {
                     if (array_key_exists($adding, $this->keywords)) {
                         $keyword = $this->keywords[$adding];
                     } else {

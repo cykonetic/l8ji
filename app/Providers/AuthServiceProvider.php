@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Models\User;
+use Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider
@@ -24,6 +26,12 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        //
+        // Alow Super users to do anything
+        Gate::before(function (User $user, mixed $permisisson) {
+            // must return null if not super user to continue checks
+            if ($user->hasRole('Super')) {
+                return true;
+            }
+        });
     }
 }
