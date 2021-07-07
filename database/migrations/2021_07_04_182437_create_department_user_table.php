@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateLocationUserTable extends Migration
+class CreateDepartmentUserTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,9 @@ class CreateLocationUserTable extends Migration
      */
     public function up()
     {
-        Schema::create('location_user', function (Blueprint $table) {
-            $table->unsignedBigInteger('location_id')->index();
-            $table->unsignedBigInteger('user_id');
+        Schema::create('department_user', function (Blueprint $table) {
+            $table->id();
             $table->timestamps();
-
-            $table->unique(['user_id', 'location_id']);
         });
     }
 
@@ -29,6 +26,6 @@ class CreateLocationUserTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('location_user');
+        Schema::dropIfExists('department_user');
     }
 }

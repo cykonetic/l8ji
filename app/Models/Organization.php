@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
 /**
  * App\Models\Organization
@@ -30,13 +31,31 @@ class Organization extends Model
 {
     use HasFactory;
 
+    public function departmentCourses(): HasManyThrough
+    {
+        return $this->hasManyThrough(
+            Course::class,
+            Department::class
+        );
+    }
+
     public function departments(): HasMany
     {
         return $this->hasMany(Department::class);
+    }
+
+    public function locationCourses(): HasManyThrough
+    {
+        return $this->hasManyThrough(
+            Course::class,
+            Location::class
+        );
     }
 
     public function locations(): HasMany
     {
         return $this->hasMany(Location::class);
     }
+
+
 }
