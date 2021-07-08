@@ -16,9 +16,13 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Course[] $courses
+ * @property-read int|null $courses_count
  * @property-read Model|\Eloquent $doable
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Keyword[] $keywords
  * @property-read int|null $keywords_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Organization[] $organizations
+ * @property-read int|null $organizations_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Program[] $programs
  * @property-read int|null $programs_count
  * @method static \Illuminate\Database\Eloquent\Builder|Activity newModelQuery()
@@ -41,6 +45,12 @@ class Activity extends Model
 
     protected $guarded = [];
 
+    public function courses(): BelongsToMany
+    {
+        return $this->belongsToMany(Course::class)
+            ->withTimestamps();
+    }
+
     public function doable(): MorphTo
     {
         return $this->morphTo();
@@ -49,6 +59,12 @@ class Activity extends Model
     public function keywords(): BelongsToMany
     {
         return $this->belongsToMany(Keyword::class)
+            ->withTimestamps();
+    }
+
+    public function organizations(): BelongsToMany
+    {
+        return $this->belongsToMany(Organization::class)
             ->withTimestamps();
     }
 

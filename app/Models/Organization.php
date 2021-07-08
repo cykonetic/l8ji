@@ -4,8 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
 /**
  * App\Models\Organization
@@ -14,12 +14,10 @@ use Illuminate\Database\Eloquent\Relations\HasManyThrough;
  * @property string $name
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Course[] $departmentCourses
- * @property-read int|null $department_courses_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Activity[] $activities
+ * @property-read int|null $activities_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Department[] $departments
  * @property-read int|null $departments_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Course[] $locationCourses
- * @property-read int|null $location_courses_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Location[] $locations
  * @property-read int|null $locations_count
  * @method static \Illuminate\Database\Eloquent\Builder|Organization newModelQuery()
@@ -35,25 +33,9 @@ class Organization extends Model
 {
     use HasFactory;
 
-    public function departmentCourses(): HasManyThrough
-    {
-        return $this->hasManyThrough(
-            Course::class,
-            Department::class
-        );
-    }
-
     public function departments(): HasMany
     {
         return $this->hasMany(Department::class);
-    }
-
-    public function locationCourses(): HasManyThrough
-    {
-        return $this->hasManyThrough(
-            Course::class,
-            Location::class
-        );
     }
 
     public function locations(): HasMany
@@ -61,5 +43,9 @@ class Organization extends Model
         return $this->hasMany(Location::class);
     }
 
-
+    public function activities(): BelongsToMany
+    {
+        return $this->belongsToMany(Activity::class)
+            ->withTimestamps();
+    }
 }

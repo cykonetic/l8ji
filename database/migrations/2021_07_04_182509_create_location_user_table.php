@@ -14,8 +14,11 @@ class CreateLocationUserTable extends Migration
     public function up()
     {
         Schema::create('location_user', function (Blueprint $table) {
-            $table->id();
+            $table->unsignedBigInteger('location_id')->index();
+            $table->unsignedBigInteger('user_id');
             $table->timestamps();
+
+            $table->index(['user_id', 'location_id']);
         });
     }
 

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateDepartmentUserTable extends Migration
+class CreateActivityOrganizationTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,12 @@ class CreateDepartmentUserTable extends Migration
      */
     public function up()
     {
-        Schema::create('department_user', function (Blueprint $table) {
-            $table->unsignedBigInteger('department_id')->index();
-            $table->unsignedBigInteger('user_id');
+        Schema::create('activity_organization', function (Blueprint $table) {
+            $table->unsignedBigInteger('activity_id')->index();
+            $table->unsignedBigInteger('organization_id');
             $table->timestamps();
 
-            $table->index(['user_id', 'department_id']);
+            $table->index(['organization_id', 'activity_id']);
         });
     }
 
@@ -29,6 +29,6 @@ class CreateDepartmentUserTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('department_user');
+        Schema::dropIfExists('activity_organization');
     }
 }

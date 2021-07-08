@@ -10,6 +10,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 /**
  * App\Models\Course
  *
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Activity[] $activities
+ * @property-read int|null $activities_count
  * @property-read \App\Models\Department $department
  * @property-read \App\Models\Location $location
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\User[] $users
@@ -25,6 +27,12 @@ class Course extends Model
 
     public $incrementing = true;
 
+    public function activities(): BelongsToMany
+    {
+        return $this->belongsToMany(Activity::class)
+            ->withTimestamps();
+    }
+
     public function department(): BelongsTo
     {
         return $this->belongsTo(Department::class);
@@ -37,6 +45,7 @@ class Course extends Model
 
     public function users(): BelongsToMany
     {
-        return $this->belongsToMany(User::class);
+        return $this->belongsToMany(User::class)
+            ->withTimestamps();
     }
 }

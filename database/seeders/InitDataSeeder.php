@@ -31,8 +31,8 @@ class InitDataSeeder extends Seeder
                 'max' => 9,
                 'related' => [
                     Keyword::class => [
-                        'min' => 5,
-                        'max' => 9,
+                        'min' => 4,
+                        'max' => 7,
                     ],
                 ],
             ],
@@ -45,8 +45,8 @@ class InitDataSeeder extends Seeder
                 'max' => 13,
                 'related' => [
                     Keyword::class => [
-                        'min' => 5,
-                        'max' => 9,
+                        'min' => 4,
+                        'max' => 7,
                     ],
                 ],
             ],
@@ -59,12 +59,12 @@ class InitDataSeeder extends Seeder
                 'max' => 3,
                 'related' => [
                     Activity::class => [
-                        'min' => 9,
-                        'max' => 13,
+                        'min' => 5,
+                        'max' => 8,
                     ],
                     Keyword::class => [
-                        'min' => 9,
-                        'max' => 13,
+                        'min' => 5,
+                        'max' => 8,
                     ],
                 ],
             ],
