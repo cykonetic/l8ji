@@ -16,9 +16,14 @@ class CreateCourseUserTable extends Migration
         Schema::create('course_user', function (Blueprint $table) {
             $table->unsignedBigInteger('course_id')->index();
             $table->unsignedBigInteger('user_id');
+            $table->boolean('master')->default(false);
+            // view users
+            // view activities
+            $table->boolean('host_video')->default(false);
+
             $table->timestamps();
 
-            $table->index(['user_id', 'course_id']);
+            $table->index(['user_id', 'course_id', 'master']);
         });
     }
 
